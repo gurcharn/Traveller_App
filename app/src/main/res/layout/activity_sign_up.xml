@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/sign_up"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="25dp"
+            android:text="@string/sign_up_text"
+            android:textColor="@color/colorBlack"/>
+
+        <TextView
+            android:id="@+id/error_text"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="20dp"
+            android:textColor="@color/colorRed"
+            android:background="@color/colorWhite"
+            android:layout_below="@id/sign_up"/>
+
+        <EditText
+            android:id="@+id/firstname"
+            android:inputType="text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/firstname_hint_text"
+            android:textSize="25dp"
+            android:textColor="@color/colorBlack"
+            android:layout_below="@+id/error_text"  />
+
+        <EditText
+            android:id="@+id/lastname"
+            android:inputType="text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/lastname_hint_text"
+            android:textSize="25dp"
+            android:textColor="@color/colorBlack"
+            android:layout_below="@+id/firstname" />
+
+        <EditText
+            android:id="@+id/email"
+            android:inputType="textEmailAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/email_hint_text"
+            android:textSize="25dp"
+            android:textColor="@color/colorBlack"
+            android:layout_below="@+id/lastname" />
+
+        <EditText
+            android:id="@+id/username"
+            android:inputType="text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/username_hint_text"
+            android:textSize="25dp"
+            android:textColor="@color/colorBlack"
+            android:layout_below="@+id/email" />
+
+        <EditText
+            android:id="@+id/password"
+            android:inputType="textPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/password_hint_text"
+            android:textSize="25dp"
+            android:textColor="@color/colorBlack"
+            android:layout_below="@+id/username" />
+
+        <EditText
+            android:id="@+id/confirmPassword"
+            android:inputType="textPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/confirm_password_hint_text"
+            android:textSize="25dp"
+            android:textColor="@color/colorBlack"
+            android:layout_below="@id/password" />
+
+        <Button
+            android:id="@+id/sign_up_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/sign_up_button_text"
+            android:textSize="25dp"
+            android:textColor="@color/colorWhite"
+            android:background="@color/colorGreen"
+            android:layout_below="@+id/confirmPassword" />
+
+        <Button
+            android:id="@+id/reset_form_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/reset_Form_button_text"
+            android:textSize="25dp"
+            android:textColor="@color/colorWhite"
+            android:background="@color/colorOrange"
+            android:layout_below="@+id/sign_up_button" />
+
+        <Button
+            android:id="@+id/back_to_login_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/back_to_login_button_text"
+            android:textSize="25dp"
+            android:textColor="@color/colorWhite"
+            android:background="@color/colorSkyBlue"
+            android:layout_below="@+id/reset_form_button" />
+
+    </RelativeLayout>
+</ScrollView>

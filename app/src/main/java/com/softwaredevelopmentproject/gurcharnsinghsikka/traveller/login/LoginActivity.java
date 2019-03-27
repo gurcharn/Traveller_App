@@ -1,6 +1,7 @@
 package com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.login;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.R;
+import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.signup.SignUpActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -67,7 +69,8 @@ public class LoginActivity extends AppCompatActivity {
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //To-Do take to sign up activity
+                Intent signUpActivity = new Intent(LoginActivity.this, SignUpActivity.class);
+                startActivity(signUpActivity);
             }
         });
     }

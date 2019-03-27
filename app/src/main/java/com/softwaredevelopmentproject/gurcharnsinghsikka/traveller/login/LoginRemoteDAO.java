@@ -25,59 +25,69 @@ public class LoginRemoteDAO {
         this.loginActivity = (LoginActivity) context ;
     }
 
-    public void loginRequestHandler(String username, String password){
-        JSONObject jsonBody = new JSONObject();
+    public void loginRequestHandler(final String username, final String password){
+        android.os.Handler mainHandler = new android.os.Handler(context.getMainLooper());
 
-        try{
-            jsonBody.put("username", username);
-            jsonBody.put("password", password);
-        } catch (JSONException e){
-            e.printStackTrace();
-        }
-
-        Response.Listener<JSONObject> listenerResponse = new Response.Listener<JSONObject>() {
+        Runnable myRunnable = new Runnable() {
             @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    Login login = new Login(response.getString("id"), response.getString("username"), response.getString("token"));
-                    loginLocalDAO.insertLogin(login);
-                    login = loginLocalDAO.getLogin();
+            public void run() {
+                JSONObject jsonBody = new JSONObject();
 
-                    loginActivity.setErrorText("User ID : " + login.getId());
-
-                    loginActivity.dismissProgressDialog();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-
-        Response.ErrorListener listenerError = new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
                 try{
-                    String errorRes = new String(error.networkResponse.data);
-                    JSONObject result = new JSONObject(errorRes);
-
-                    if(result.getInt("status") == 500)
-                        loginActivity.setErrorText("Error : " + result.get("message"));
-                    else
-                        loginActivity.setErrorText("Error : Server Error");
-
-                    loginActivity.dismissProgressDialog();
+                    jsonBody.put("username", username);
+                    jsonBody.put("password", password);
                 } catch (JSONException e){
                     e.printStackTrace();
                 }
+
+                Response.Listener<JSONObject> listenerResponse = new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            Login login = new Login(response.getString("id"), response.getString("username"), response.getString("token"));
+                            loginLocalDAO.insertLogin(login);
+                            login = loginLocalDAO.getLogin();
+
+                            loginActivity.setErrorText("User ID : " + login.getId());
+
+                            loginActivity.dismissProgressDialog();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+
+                Response.ErrorListener listenerError = new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        try{
+                            String errorRes = new String(error.networkResponse.data);
+                            JSONObject result = new JSONObject(errorRes);
+
+                            if(result.getInt("status") == 500)
+                                loginActivity.setErrorText("Error : " + result.get("message"));
+                            else
+                                loginActivity.setErrorText("Error : Server Error");
+
+                            loginActivity.dismissProgressDialog();
+                        } catch (JSONException e){
+                            e.printStackTrace();
+                        }
+                    }
+                };
+
+                loginActivity.showProgressDialog("Checking Internet Connection");
+
+                if(volleyRequestHandler.hasActiveInternetConnection()){
+                    loginActivity.showProgressDialog("Authenticating Credentials");
+                    volleyRequestHandler.postRequest(ENDPOINT, jsonBody, listenerResponse, listenerError);
+                } else{
+                    Toast.makeText(context, "No Internet Connection", Toast.LENGTH_LONG).show();
+                    loginActivity.dismissProgressDialog();
+                }
             }
         };
 
-        loginActivity.showProgressDialog("Checking Internet Connection");
-
-        if(volleyRequestHandler.hasActiveInternetConnection()){
-            loginActivity.showProgressDialog("Authenticating Credentials");
-            volleyRequestHandler.postRequest(ENDPOINT, jsonBody, listenerResponse, listenerError);
-        }
-        else
-            Toast.makeText(context, "No Internet Connection", Toast.LENGTH_LONG).show();
+        mainHandler.post(myRunnable);
     }
 }
