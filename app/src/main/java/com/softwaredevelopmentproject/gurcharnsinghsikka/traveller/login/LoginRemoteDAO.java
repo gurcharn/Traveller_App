@@ -1,30 +1,46 @@
 package com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.login;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.R;
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.volleyService.VolleyRequestHandler;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * @author Gurcharn Singh Sikka
+ * @version 1.0
+ *
+ * Object to handle API requests for login
+ */
 public class LoginRemoteDAO {
-    private final String ENDPOINT = "login";
+    private final String endpoint;
 
     private Context context;
     private LoginLocalDAO loginLocalDAO;
     private VolleyRequestHandler volleyRequestHandler;
     private LoginActivity loginActivity;
 
-    public LoginRemoteDAO(Context context){
+    /**
+     * Constructor
+     * @param context
+     */
+    LoginRemoteDAO(Context context){
+        this.endpoint = context.getResources().getString(R.string.login_endpoint);
         this.context = context;
         this.loginLocalDAO = new LoginLocalDAO(context);
         this.volleyRequestHandler = new VolleyRequestHandler(context);
         this.loginActivity = (LoginActivity) context ;
     }
 
+    /**
+     * Methgd to send login requests
+     * @param username
+     * @param password
+     */
     public void loginRequestHandler(final String username, final String password){
         android.os.Handler mainHandler = new android.os.Handler(context.getMainLooper());
 
@@ -45,12 +61,11 @@ public class LoginRemoteDAO {
                     public void onResponse(JSONObject response) {
                         try {
                             Login login = new Login(response.getString("id"), response.getString("username"), response.getString("token"));
+
                             loginLocalDAO.insertLogin(login);
-                            login = loginLocalDAO.getLogin();
-
-                            loginActivity.setErrorText("User ID : " + login.getId());
-
+                            loginActivity.setErrorText("");
                             loginActivity.dismissProgressDialog();
+                            loginActivity.loginIfTokenExist();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -67,22 +82,27 @@ public class LoginRemoteDAO {
                             if(result.getInt("status") == 500)
                                 loginActivity.setErrorText("Error : " + result.get("message"));
                             else
-                                loginActivity.setErrorText("Error : Server Error");
+                                loginActivity.setErrorText(context.getResources().getString(R.string.server_error_0));
 
                             loginActivity.dismissProgressDialog();
                         } catch (JSONException e){
                             e.printStackTrace();
+                            loginActivity.dismissProgressDialog();
+                        } catch (NullPointerException e){
+                            e.printStackTrace();
+                            loginActivity.setErrorText(context.getResources().getString(R.string.server_error_1));
+                            loginActivity.dismissProgressDialog();
                         }
                     }
                 };
 
-                loginActivity.showProgressDialog("Checking Internet Connection");
+                loginActivity.showProgressDialog(context.getResources().getString(R.string.checking_internet));
 
                 if(volleyRequestHandler.hasActiveInternetConnection()){
                     loginActivity.showProgressDialog("Authenticating Credentials");
-                    volleyRequestHandler.postRequest(ENDPOINT, jsonBody, listenerResponse, listenerError);
+                    volleyRequestHandler.postRequest(endpoint, jsonBody, listenerResponse, listenerError);
                 } else{
-                    Toast.makeText(context, "No Internet Connection", Toast.LENGTH_LONG).show();
+                    loginActivity.snackBar(context.getResources().getString(R.string.poor_connection));
                     loginActivity.dismissProgressDialog();
                 }
             }

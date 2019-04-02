@@ -15,4 +15,26 @@
     <string name="back_to_login_button_text">Back to login</string>
 
     <string name="sign_up_text">Sign Up</string>
+
+    <string name="domain">http://192.168.0.108:9000/</string>
+    <string name="login_endpoint">login</string>
+    <string name="signup_endpoint">signUp</string>
+
+    <string name="user_not_registered">User not registered \nServer Error \nPlease try again later</string>
+    <string name="user_registration_done">User registered successfully</string>
+
+    <string name="poor_connection">Poor Internet Connection</string>
+    <string name="checking_internet">Checking Internet Connection</string>
+    <string name="sending_request">Sending Request</string>
+
+    <string name="server_error_0">Server Error</string>
+    <string name="server_error_1">Server Error \nPlease try again later</string>
+    <string name="title_activity_home">HomeActivity</string>
+
+    <string name="nav_itinerary_text">Itinerary</string>
+    <string name="nav_places_text">Places</string>
+    <string name="nav_people_text">People</string>
+    <string name="nav_chat_text">Chat</string>
+    <string name="nav_list_text">List</string>
+    <string name="nav_profile_text">Profile</string>
 </resources>

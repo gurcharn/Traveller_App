@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,6 +12,12 @@ import android.widget.TextView;
 
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.R;
 
+/**
+ * @author Gurcharn Singh Sikka
+ * @version 1.0
+ *
+ * Sign up Activity
+ */
 public class SignUpActivity extends AppCompatActivity {
 
     private TextView errorText;
@@ -27,6 +34,10 @@ public class SignUpActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private SignUpRemoteDAO signUpRemoteDAO;
 
+    /**
+     * Method to set view when activity created
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +49,9 @@ public class SignUpActivity extends AppCompatActivity {
         backToLoginButtonHandler();
     }
 
+    /**
+     * Method to initialize all variables of this class
+     */
     private void init(){
         errorText = (TextView) findViewById(R.id.error_text);
         firstName = (EditText) findViewById(R.id.firstname);
@@ -54,22 +68,21 @@ public class SignUpActivity extends AppCompatActivity {
         signUpRemoteDAO = new SignUpRemoteDAO(this);
     }
 
+    /**
+     * Method to handle signup button click
+     */
     private void signUpButtonHandler(){
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isFormFilled()){
-                    if(isPasswordMatched()){
-                        signUpRemoteDAO.signUpRequestHandler(
-                                firstName.getText().toString(),
-                                lastName.getText().toString(),
-                                email.getText().toString(),
-                                username.getText().toString(),
-                                password.getText().toString()
+                if(isSignUpFormFilled()){
+                    signUpRemoteDAO.signUpRequestHandler(
+                            firstName.getText().toString(),
+                            lastName.getText().toString(),
+                            email.getText().toString(),
+                            username.getText().toString(),
+                            password.getText().toString()
                         );
-                    } else {
-                        snackBar("Password not matched");
-                    }
                 } else{
                     snackBar("Please fill form correctly");
                 }
@@ -77,6 +90,9 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Methpod to reset signup form
+     */
     private void resetFormButtonHandler(){
         resetFormButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +102,9 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Method to handle back to login button
+     */
     private void backToLoginButtonHandler(){
         backToLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,25 +114,39 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
-    private boolean isFormFilled(){
+    /**
+     * Method to check if sign up form is filled properly
+     * @return boolean
+     */
+    private boolean isSignUpFormFilled(){
         Boolean formFilled = true;
 
-        if(!isEditTextFilled(firstName))
+        if(!isValidEmail(email.getText().toString()))
             formFilled = false;
-        if(!isEditTextFilled(lastName))
+        if(!isPasswordMatched())
             formFilled = false;
-        if(!isEditTextFilled(email))
-            formFilled = false;
-        if(!isEditTextFilled(username))
+        if(!isEditTextFilled(confirmPassword))
             formFilled = false;
         if(!isEditTextFilled(password))
             formFilled = false;
-        if(!isEditTextFilled(confirmPassword))
+        if(!isEditTextFilled(username))
+            formFilled = false;
+        if(!isEditTextFilled(email))
+            formFilled = false;
+        if(!isEditTextFilled(lastName))
+            formFilled = false;
+        if(!isEditTextFilled(firstName))
             formFilled = false;
 
         return formFilled;
     }
 
+    /**
+     * Method to check if edit text field is propely filled.
+     * If not filled properly then set error on that field.
+     * @param editText
+     * @return boolean
+     */
     private boolean isEditTextFilled( EditText editText){
         if(editText == null){
             editText.setError("Required");
@@ -133,6 +166,33 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Method to check if email id is valid or not
+     * Set error if not valid
+     * @param target
+     * @return boolean
+     */
+    private boolean isValidEmail(CharSequence target) {
+        if(TextUtils.isEmpty(target)){
+            email.setError("Email ID required");
+            email.requestFocus();
+            return false;
+        } else if(android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches()){
+            email.setError(null);
+            email.clearFocus();
+            return true;
+        } else{
+            email.setError("Invalid Email ID");
+            email.requestFocus();
+            return false;
+        }
+    }
+
+    /**
+     * Method to check if password and confirm password matched or not
+     * Set error if not matched
+     * @return boolean
+     */
     private boolean isPasswordMatched(){
         if(password.getText().toString().compareTo(confirmPassword.getText().toString()) == 0){
             confirmPassword.setError(null);
@@ -149,10 +209,18 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Method to show snackbar in activity
+     * @param message
+     */
     public void snackBar(String message){
         Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG).show();
     }
 
+    /**
+     * Method to show progress dialog bar
+     * @param message
+     */
     public void showProgressDialog(String message){
         if(progressDialog.isShowing())
             progressDialog.setMessage(message);
@@ -163,15 +231,26 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Method to dismiss progress dialog
+     */
     public void dismissProgressDialog(){
         progressDialog.dismiss();
     }
 
+    /**
+     * Method to set error text and its color in view
+     * @param error
+     * @param color
+     */
     public void setErrorText(String error, int color){
         errorText.setTextColor(color);
         errorText.setText(error);
     }
 
+    /**
+     * Method to reset signup form
+     */
     public void resetSignUpForm(){
         errorText.setText("");
         firstName.setText("");

@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="20dp">
+    android:padding="@dimen/layout_padding">
 
     <ImageView
         android:id="@+id/appIcon"
@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/username_hint_text"
-        android:textSize="25dp"
+        android:textSize="@dimen/text_size"
         android:textColor="@color/colorBlack"
         android:layout_below="@+id/appIcon" />
 
@@ -27,18 +27,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/password_hint_text"
-        android:textSize="25dp"
+        android:textSize="@dimen/text_size"
         android:textColor="@color/colorBlack"
         android:layout_below="@+id/username" />
 
     <TextView
         android:id="@+id/error_text"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
+        android:paddingTop="@dimen/text_padding"
+        android:paddingBottom="@dimen/text_padding"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
-        android:textSize="20dp"
+        android:textSize="@dimen/error_text_size"
         android:textColor="@color/colorRed"
         android:background="@color/colorWhite"
         android:layout_below="@id/password"/>
@@ -48,7 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/login_button_text"
-        android:textSize="25dp"
+        android:textSize="@dimen/text_size"
         android:textColor="@color/colorWhite"
         android:background="@color/colorGreen"
         android:layout_below="@+id/error_text" />
@@ -59,7 +59,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/sign_up_button_text"
-        android:textSize="20dp"
+        android:textSize="@dimen/text_button_size"
         android:textColor="@color/colorSkyBlue"
         android:background="@color/colorWhite"
         android:layout_below="@id/login_button"
@@ -73,7 +73,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/forgot_password_button_text"
-        android:textSize="20dp"
+        android:textSize="@dimen/text_button_size"
         android:textColor="@color/colorSkyBlue"
         android:background="@color/colorWhite"
         android:layout_below="@id/login_button"

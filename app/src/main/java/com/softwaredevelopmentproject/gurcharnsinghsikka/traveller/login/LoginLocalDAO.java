@@ -6,6 +6,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+/**
+ * @author Gurcharn Singh Sikka
+ * @version 1.0
+ *
+ * Class to access data from databse
+ */
 public class LoginLocalDAO extends SQLiteOpenHelper {
 
     private static final String TRAVELLER_DATABASE_NAME = "Traveller.db";
@@ -27,34 +33,78 @@ public class LoginLocalDAO extends SQLiteOpenHelper {
     private final SQLiteDatabase getReadableDB = this.getReadableDatabase();
     private ContentValues contentValues = new ContentValues();
 
+    /**
+     * Constructor
+     * @param context
+     */
     public LoginLocalDAO(Context context){
         super(context, TRAVELLER_DATABASE_NAME, null, 1);
     }
 
+    /**
+     * Method to create login table on databse creation
+     * @param db
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(LOGIN_CREATE_TABLE);
     }
 
+    /**
+     * Method to be called when database upgraded
+     * @param db
+     * @param oldVersion
+     * @param newVersion
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(LOGIN_DROP_TABLE);
         db.execSQL(LOGIN_CREATE_TABLE);
     }
 
+    /**
+     * Method to add login information in device database
+     * @param login
+     * @return boolean
+     */
     public boolean insertLogin(Login login) {
-        try {
-            resetDb();
-            contentValues.put(LOGIN_COLUMN_ID, login.getId());
-            contentValues.put(LOGIN_COLUMN_USERNAME, login.getUsername());
-            contentValues.put(LOGIN_COLUMN_TOKEN, login.getToken());
-            getWritableDB.insert(TRAVELLER_TABLE_NAME, null, contentValues);
+        Login loginExists = getLogin();
+
+        try{
+            if(loginExists == null){
+                contentValues.put(LOGIN_COLUMN_ID, login.getId());
+                contentValues.put(LOGIN_COLUMN_USERNAME, login.getUsername());
+                contentValues.put(LOGIN_COLUMN_TOKEN, login.getToken());
+                getWritableDB.insert(TRAVELLER_TABLE_NAME, null, contentValues);
+            } else {
+                deleteLogin(loginExists);
+                contentValues.put(LOGIN_COLUMN_ID, login.getId());
+                contentValues.put(LOGIN_COLUMN_USERNAME, login.getUsername());
+                contentValues.put(LOGIN_COLUMN_TOKEN, login.getToken());
+                getWritableDB.insert(TRAVELLER_TABLE_NAME, null, contentValues);
+            }
             return true;
-        }catch (Exception e){
+        } catch (Exception e){
+            e.printStackTrace();
             return false;
         }
+//
+//        try {
+//            resetDb();
+//            contentValues.put(LOGIN_COLUMN_ID, login.getId());
+//            contentValues.put(LOGIN_COLUMN_USERNAME, login.getUsername());
+//            contentValues.put(LOGIN_COLUMN_TOKEN, login.getToken());
+//            getWritableDB.insert(TRAVELLER_TABLE_NAME, null, contentValues);
+//            return true;
+//        }catch (Exception e){
+//            return false;
+//        }
     }
 
+    /**
+     * Method to retrieve login information of current logged in user.
+     * @return Login Object
+     */
     public Login getLogin() {
         Login login = null;
         Cursor cursor = getReadableDB.rawQuery("SELECT * FROM " + TRAVELLER_TABLE_NAME, null);
@@ -67,6 +117,11 @@ public class LoginLocalDAO extends SQLiteOpenHelper {
         return login;
     }
 
+    /**
+     * Method to update login information in database
+     * @param login
+     * @return boolean
+     */
     public boolean updateLogin(Login login) {
         contentValues.put(LOGIN_COLUMN_ID, login.getId());
         contentValues.put(LOGIN_COLUMN_USERNAME, login.getUsername());
@@ -75,11 +130,20 @@ public class LoginLocalDAO extends SQLiteOpenHelper {
         return true;
     }
 
+    /**
+     * Method to delete login information from database
+     * @param login
+     * @return boolean
+     */
     public boolean deleteLogin(Login login) {
         getWritableDB.delete(TRAVELLER_TABLE_NAME, "id = ? ", new String[] { login.getId() });
         return true;
     }
 
+    /**
+     * Method to reset databse
+     * @return boolean
+     */
     public boolean resetDb(){
         onUpgrade(getReadableDB, 0, 0);
         return true;

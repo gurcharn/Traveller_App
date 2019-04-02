@@ -4,25 +4,44 @@ import android.content.Context;
 import android.graphics.Color;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.R;
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.volleyService.VolleyRequestHandler;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * @author Gurcharn Singh Sikka
+ * @version 1.0
+ *
+ * Object to handle api requests for signup
+ */
 public class SignUpRemoteDAO {
 
-    private final String ENDPOINT = "signUp";
+    private final String endpoint;
 
     private Context context;
     private VolleyRequestHandler volleyRequestHandler;
     private SignUpActivity signUpActivity;
 
+    /**
+     * Constructor
+     * @param context
+     */
     public SignUpRemoteDAO(Context context) {
+        this.endpoint = context.getResources().getString(R.string.signup_endpoint);
         this.context = context;
         this.volleyRequestHandler = new VolleyRequestHandler(context);
         this.signUpActivity = (SignUpActivity) context;
     }
 
+    /**
+     * Method to handle signup request with response and error listener
+     * @param firstName
+     * @param lastName
+     * @param email
+     * @param username
+     * @param password
+     */
     public void signUpRequestHandler(final String firstName, final String lastName, final String email, final String username, final String password) {
         android.os.Handler mainHandler = new android.os.Handler(context.getMainLooper());
 
@@ -54,15 +73,16 @@ public class SignUpRemoteDAO {
                             String userId = response.getString("userId");
                             signUpActivity.dismissProgressDialog();
 
+                            String a = context.getResources().getString(R.string.app_name);
                             if (userId == null || userId.isEmpty())
-                                signUpActivity.setErrorText("User not registered \n Server Error \n Please try again later", Color.RED);
+                                signUpActivity.setErrorText(context.getResources().getString(R.string.user_not_registered), Color.RED);
                             else {
                                 signUpActivity.resetSignUpForm();
-                                signUpActivity.setErrorText("User Registered Successfully", Color.GREEN);
-                                signUpActivity.snackBar("User Registered Successfully");
+                                signUpActivity.setErrorText(context.getResources().getString(R.string.user_registration_done), Color.GREEN);
+                                signUpActivity.snackBar(context.getResources().getString(R.string.user_registration_done));
                             }
                         } catch (JSONException e) {
-                            signUpActivity.setErrorText("Server Error \n Please try again later", Color.RED);
+                            signUpActivity.setErrorText(context.getResources().getString(R.string.server_error_1), Color.RED);
                             e.printStackTrace();
                         }
                     }
@@ -79,27 +99,31 @@ public class SignUpRemoteDAO {
                                 if (result.getInt("status") == 500)
                                     signUpActivity.setErrorText("Error : " + result.get("message"), Color.RED);
                                 else
-                                    signUpActivity.setErrorText("Error : Server Error", Color.RED);
+                                    signUpActivity.setErrorText(context.getResources().getString(R.string.server_error_0), Color.RED);
 
                                 signUpActivity.dismissProgressDialog();
                             } else {
-                                signUpActivity.setErrorText("Error : Server Error \n Please try again later", Color.RED);
+                                signUpActivity.setErrorText(context.getResources().getString(R.string.server_error_1), Color.RED);
                                 signUpActivity.dismissProgressDialog();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                        } catch (NullPointerException e) {
+                            e.printStackTrace();
+                            signUpActivity.setErrorText(context.getResources().getString(R.string.server_error_1), Color.RED);
+                            signUpActivity.dismissProgressDialog();
                         }
                     }
                 };
 
-                signUpActivity.showProgressDialog("Checking Internet Connection");
+                signUpActivity.showProgressDialog(context.getResources().getString(R.string.checking_internet));
 
                 if (volleyRequestHandler.hasActiveInternetConnection()) {
-                    signUpActivity.showProgressDialog("Sending Request");
-                    volleyRequestHandler.postRequest(ENDPOINT, jsonBody, listenerResponse, listenerError);
+                    signUpActivity.showProgressDialog(context.getResources().getString(R.string.sending_request));
+                    volleyRequestHandler.postRequest(endpoint, jsonBody, listenerResponse, listenerError);
                 } else {
                     signUpActivity.dismissProgressDialog();
-                    signUpActivity.snackBar("No Internet Connection");
+                    signUpActivity.snackBar(context.getResources().getString(R.string.poor_connection));
                 }
             }
         };

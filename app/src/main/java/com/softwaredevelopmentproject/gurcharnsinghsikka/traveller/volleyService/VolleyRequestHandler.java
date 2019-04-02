@@ -11,6 +11,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.R;
 
 import org.json.JSONObject;
 
@@ -18,18 +19,34 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+/**
+ * @author Gurcharn Singh Sikka
+ * @version 1.0
+ *
+ * Class to handle all volley requests to API
+ */
 public class VolleyRequestHandler {
 
-    private final String domain = "http://192.168.0.108:9000/";
+    private final String domain;
 
     private Context context;
     private RequestQueue requestQueue;
 
+    /**
+     * Constructor
+     *
+     * @param context
+     */
     public VolleyRequestHandler(Context context) {
+        this.domain = context.getResources().getString(R.string.domain);
         this.context = context;
         this.requestQueue = Volley.newRequestQueue(context.getApplicationContext());
     }
 
+    /**
+     * Method to check if device have any coonected network
+     * @return boolean
+     */
     private boolean isNetworkAvailable() {
         boolean haveConnectedWifi = false;
         boolean haveConnectedMobile = false;
@@ -52,6 +69,10 @@ public class VolleyRequestHandler {
         }
     }
 
+    /**
+     * Method to check if device have active internet connectorion or not
+     * @return boolean
+     */
     public boolean hasActiveInternetConnection() {
         if (isNetworkAvailable()) {
             if (android.os.Build.VERSION.SDK_INT > 9) {
@@ -75,15 +96,28 @@ public class VolleyRequestHandler {
         return false;
     }
 
+    /**
+     * Method to handle GET requests to API
+     * @param endpoint
+     * @param listenerResponse
+     * @param listenerError
+     */
     public void getRequest(String endpoint, Response.Listener<JSONObject> listenerResponse, Response.ErrorListener listenerError){
-        String url = domain + endpoint;
+        final String url = domain + endpoint;
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, listenerResponse, listenerError);
         requestQueue.add(request);
     }
 
+    /**
+     * Method to handle POST requests to API
+     * @param endpoint
+     * @param jsonBody
+     * @param listenerResponse
+     * @param listenerError
+     */
     public void postRequest(String endpoint, JSONObject jsonBody, Response.Listener<JSONObject> listenerResponse, Response.ErrorListener listenerError){
-        String url = domain + endpoint;
+        final String url = domain + endpoint;
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, jsonBody, listenerResponse, listenerError);
         requestQueue.add(request);
