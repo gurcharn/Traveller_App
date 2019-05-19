@@ -120,7 +120,7 @@ public class SignUpRemoteDAO {
 
                 if (volleyRequestHandler.hasActiveInternetConnection()) {
                     signUpActivity.showProgressDialog(context.getResources().getString(R.string.sending_request));
-                    volleyRequestHandler.postRequest(endpoint, jsonBody, listenerResponse, listenerError);
+                    volleyRequestHandler.postRequest(endpoint, jsonBody, listenerResponse, listenerError, null);
                 } else {
                     signUpActivity.dismissProgressDialog();
                     signUpActivity.snackBar(context.getResources().getString(R.string.poor_connection));

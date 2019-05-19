@@ -100,7 +100,7 @@ public class LoginRemoteDAO {
 
                 if(volleyRequestHandler.hasActiveInternetConnection()){
                     loginActivity.showProgressDialog("Authenticating Credentials");
-                    volleyRequestHandler.postRequest(endpoint, jsonBody, listenerResponse, listenerError);
+                    volleyRequestHandler.postRequest(endpoint, jsonBody, listenerResponse, listenerError, null);
                 } else{
                     loginActivity.snackBar(context.getResources().getString(R.string.poor_connection));
                     loginActivity.dismissProgressDialog();

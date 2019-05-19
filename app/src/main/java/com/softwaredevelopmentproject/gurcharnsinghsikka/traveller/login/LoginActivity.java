@@ -8,12 +8,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.R;
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.home.HomeActivity;
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.signup.SignUpActivity;
+import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.trips.TripsActivity;
 
 /**
  * @author Gurcharn Singh Sikka
@@ -171,7 +171,7 @@ public class LoginActivity extends AppCompatActivity {
      * Method to change activity to Home Activity
      */
     private void startHomePage(){
-        Intent homeActivity = new Intent(LoginActivity.this, HomeActivity.class);
+        Intent homeActivity = new Intent(LoginActivity.this, TripsActivity.class);
         startActivity(homeActivity);
     }
 

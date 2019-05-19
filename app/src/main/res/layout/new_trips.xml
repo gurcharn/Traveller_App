@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/layout_padding"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/heading"
+            android:paddingTop="@dimen/text_padding"
+            android:paddingBottom="@dimen/text_padding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/new_trip_activity_heading"
+            android:textSize="@dimen/text_size"
+            android:textColor="@color/colorBlack"/>
+
+        <TextView
+            android:id="@+id/error_text"
+            android:paddingTop="@dimen/text_padding"
+            android:paddingBottom="@dimen/text_padding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="@dimen/error_text_size"
+            android:textColor="@color/colorRed"
+            android:background="@color/colorWhite"
+            android:layout_below="@id/heading"/>
+
+        <AutoCompleteTextView
+            android:id="@+id/place"
+            android:inputType="text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/cityname_hint_text"
+            android:textSize="@dimen/text_size"
+            android:textColor="@color/colorBlack"
+            android:drawableRight="@drawable/ic_place_black_24dp"
+            android:drawablePadding="5dp"
+            android:layout_below="@id/error_text" />
+
+        <EditText
+            android:id="@+id/fromDate"
+            android:inputType="date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/fromDate_hint_text"
+            android:textSize="@dimen/text_size"
+            android:textColor="@color/colorBlack"
+            android:clickable="true"
+            android:drawableRight="@drawable/ic_date_range_black_24dp"
+            android:drawablePadding="5dp"
+            android:layout_below="@id/place" />
+
+        <EditText
+            android:id="@+id/toDate"
+            android:inputType="date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/toDate_hint_text"
+            android:textSize="@dimen/text_size"
+            android:textColor="@color/colorBlack"
+            android:clickable="true"
+            android:drawableRight="@drawable/ic_date_range_black_24dp"
+            android:drawablePadding="5dp"
+            android:layout_below="@id/fromDate" />
+
+        <Button
+            android:id="@+id/saveTrip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/saveTrip_button_text"
+            android:textSize="@dimen/text_size"
+            android:textColor="@color/colorWhite"
+            android:background="@color/colorGreen"
+            android:layout_below="@id/toDate" />
+
+        <include
+            layout="@layout/empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/saveTrip"/>
+
+    </RelativeLayout>
+
+</ScrollView>

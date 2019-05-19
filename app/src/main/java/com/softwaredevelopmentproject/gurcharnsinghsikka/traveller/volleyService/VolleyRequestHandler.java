@@ -6,6 +6,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.StrictMode;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -18,6 +19,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Gurcharn Singh Sikka
@@ -116,10 +119,19 @@ public class VolleyRequestHandler {
      * @param listenerResponse
      * @param listenerError
      */
-    public void postRequest(String endpoint, JSONObject jsonBody, Response.Listener<JSONObject> listenerResponse, Response.ErrorListener listenerError){
+    public void postRequest(String endpoint, JSONObject jsonBody, Response.Listener<JSONObject> listenerResponse, Response.ErrorListener listenerError, final String token){
         final String url = domain + endpoint;
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, jsonBody, listenerResponse, listenerError);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, jsonBody, listenerResponse, listenerError){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<String, String>();
+
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorisation", "Token " + token);
+                return headers;
+            }
+        };
         requestQueue.add(request);
     }
 }
