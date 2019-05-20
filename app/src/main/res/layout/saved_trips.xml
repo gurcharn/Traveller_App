@@ -25,11 +25,23 @@
             android:textSize="@dimen/text_size"
             android:textColor="@color/colorBlack"/>
 
+        <TextView
+            android:id="@+id/error_text"
+            android:paddingTop="@dimen/text_padding"
+            android:paddingBottom="@dimen/text_padding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="@dimen/error_text_size"
+            android:textColor="@color/colorRed"
+            android:background="@color/colorWhite"
+            android:layout_below="@id/heading"/>
+
         <ListView
             android:id="@+id/savedTripsList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/heading">
+            android:layout_below="@id/error_text">
 
         </ListView>
 

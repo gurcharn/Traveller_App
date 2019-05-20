@@ -51,9 +51,6 @@ public class NewTripsFragment extends Fragment {
     private ArrayList<String> placesSuggestions;
     private TripRemoteDAO tripRemoteDAO;
 
-    private Date arrivalDate;
-    private Date departureDate;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -80,9 +77,6 @@ public class NewTripsFragment extends Fragment {
 
         placesSuggestions = new ArrayList<String>();
         geocoder = new Geocoder(this.getContext());
-
-        arrivalDate = new Date();
-        departureDate = new Date();
     }
 
     private void placeTextEditHandler(){

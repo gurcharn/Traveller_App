@@ -32,11 +32,13 @@
 
     <string name="new_trip_added_successfully">New Trip added successfully</string>
 
+    <string name="no_results_error">No results found !</string>
     <string name="new_trip_form_error">Please fill form correctly.</string>
 
     <string name="poor_connection">Poor Internet Connection</string>
     <string name="checking_internet">Checking Internet Connection</string>
     <string name="sending_request">Sending Request</string>
+    <string name="trip_sending_request">Fetching Trips</string>
 
     <string name="server_error_0">Server Error</string>
     <string name="server_error_1">Server Error \nPlease try again later</string>

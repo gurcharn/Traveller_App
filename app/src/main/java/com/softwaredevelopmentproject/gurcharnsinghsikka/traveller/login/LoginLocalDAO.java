@@ -23,7 +23,7 @@ public class LoginLocalDAO extends SQLiteOpenHelper {
 
     private final String LOGIN_CREATE_TABLE = "create table " + TRAVELLER_TABLE_NAME +"(" +
                                                 LOGIN_COLUMN_ID + " text primary key, " +
-                                                LOGIN_COLUMN_USERNAME + " text," +
+                                                LOGIN_COLUMN_USERNAME + " text, " +
                                                 LOGIN_COLUMN_TOKEN + " text, " +
                                                 LOGIN_COLUMN_DATE + " text" +
                                                 ")";

@@ -10,10 +10,12 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.R;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -105,10 +107,35 @@ public class VolleyRequestHandler {
      * @param listenerResponse
      * @param listenerError
      */
-    public void getRequest(String endpoint, Response.Listener<JSONObject> listenerResponse, Response.ErrorListener listenerError){
+    public void getRequest(String endpoint, Response.Listener<JSONObject> listenerResponse, Response.ErrorListener listenerError, final String token){
         final String url = domain + endpoint;
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, listenerResponse, listenerError);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, listenerResponse, listenerError){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<String, String>();
+
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorisation", "Token " + token);
+                return headers;
+            }
+        };
+        requestQueue.add(request);
+    }
+
+    public void getRequestWithArrayResult(String endpoint, Response.Listener<JSONArray> listenerResponse, Response.ErrorListener listenerError, final String token){
+        final String url = domain + endpoint;
+
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, listenerResponse, listenerError){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<String, String>();
+
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorisation", "Token " + token);
+                return headers;
+            }
+        };
         requestQueue.add(request);
     }
 
