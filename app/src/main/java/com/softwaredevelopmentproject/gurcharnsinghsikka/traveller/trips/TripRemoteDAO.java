@@ -22,7 +22,8 @@ public class TripRemoteDAO {
 
     private Context context;
     private NewTripsFragment newTripsFragment;
-    private SavedTripsFragment savedTripsFragment;
+    private SavedTripsListFragment savedTripsListFragment;
+    private EditTripFragment editTripFragment;
     private VolleyRequestHandler volleyRequestHandler;
     private LoginLocalDAO loginLocalDAO;
     private TripLocalDAO tripLocalDAO;
@@ -36,10 +37,19 @@ public class TripRemoteDAO {
         this.tripLocalDAO = new TripLocalDAO(context);
     }
 
-    public TripRemoteDAO(Context context, SavedTripsFragment savedTripsFragment) {
+    public TripRemoteDAO(Context context, SavedTripsListFragment savedTripsListFragment) {
         this.endpoint = context.getResources().getString(R.string.trip_endpoint);
         this.context = context;
-        this.savedTripsFragment = (SavedTripsFragment) savedTripsFragment;
+        this.savedTripsListFragment = (SavedTripsListFragment) savedTripsListFragment;
+        this.volleyRequestHandler = new VolleyRequestHandler(context);
+        this.loginLocalDAO = new LoginLocalDAO(context);
+        this.tripLocalDAO = new TripLocalDAO(context);
+    }
+
+    public TripRemoteDAO(Context context, EditTripFragment editTripFragment) {
+        this.endpoint = context.getResources().getString(R.string.trip_endpoint);
+        this.context = context;
+        this.editTripFragment = (EditTripFragment) editTripFragment;
         this.volleyRequestHandler = new VolleyRequestHandler(context);
         this.loginLocalDAO = new LoginLocalDAO(context);
         this.tripLocalDAO = new TripLocalDAO(context);
@@ -137,10 +147,11 @@ public class TripRemoteDAO {
                         if(tripArrayList.isEmpty()){
                             return;
                         } else{
+                            tripLocalDAO.resetTable();
                             tripLocalDAO.insertTrip(tripArrayList);
                         }
-                        savedTripsFragment.setErrorText("", Color.RED);
-                        savedTripsFragment.dismissProgressDialog();
+                        savedTripsListFragment.setErrorText("", Color.RED);
+                        savedTripsListFragment.dismissProgressDialog();
                     }
                 };
 
@@ -153,34 +164,192 @@ public class TripRemoteDAO {
                                 JSONObject result = new JSONObject(errorRes);
 
                                 if (result.getInt("status") == 500)
-                                    savedTripsFragment.setErrorText("Error : " + result.get("message"), Color.RED);
+                                    savedTripsListFragment.setErrorText("Error : " + result.get("message"), Color.RED);
                                 else
-                                    savedTripsFragment.setErrorText(context.getResources().getString(R.string.server_error_0), Color.RED);
+                                    savedTripsListFragment.setErrorText(context.getResources().getString(R.string.server_error_0), Color.RED);
 
-                                savedTripsFragment.dismissProgressDialog();
+                                savedTripsListFragment.dismissProgressDialog();
                             } else {
-                                savedTripsFragment.setErrorText(context.getResources().getString(R.string.server_error_1), Color.RED);
-                                savedTripsFragment.dismissProgressDialog();
+                                savedTripsListFragment.setErrorText(context.getResources().getString(R.string.server_error_1), Color.RED);
+                                savedTripsListFragment.dismissProgressDialog();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         } catch (NullPointerException e) {
                             e.printStackTrace();
-                            savedTripsFragment.setErrorText(context.getResources().getString(R.string.server_error_1), Color.RED);
-                            savedTripsFragment.dismissProgressDialog();
+                            savedTripsListFragment.setErrorText(context.getResources().getString(R.string.server_error_1), Color.RED);
+                            savedTripsListFragment.dismissProgressDialog();
                         }
                     }
                 };
 
-                savedTripsFragment.showProgressDialog(context.getResources().getString(R.string.checking_internet));
+                savedTripsListFragment.showProgressDialog(context.getResources().getString(R.string.checking_internet));
 
                 if (volleyRequestHandler.hasActiveInternetConnection()) {
                     String params = "?userId=" + getUserId();
-                    savedTripsFragment.showProgressDialog(context.getResources().getString(R.string.trip_sending_request));
+                    savedTripsListFragment.showProgressDialog(context.getResources().getString(R.string.trip_sending_request));
                     volleyRequestHandler.getRequestWithArrayResult(endpoint + params, listenerResponse, listenerError, getToken());
                 } else {
-                    savedTripsFragment.dismissProgressDialog();
+                    savedTripsListFragment.dismissProgressDialog();
                     newTripsFragment.setErrorText(context.getResources().getString(R.string.poor_connection), Color.RED);
+                }
+            }
+        };
+        mainHandler.post(myRunnable);
+    }
+
+    public void updateTripRequestHandler(final Trip trip) {
+        android.os.Handler mainHandler = new android.os.Handler(context.getMainLooper());
+
+        Runnable myRunnable = new Runnable() {
+            @Override
+            public void run() {
+                JSONObject jsonBody = new JSONObject();
+
+                try {
+                    jsonBody.put("tripId", trip.getTripId());
+                    jsonBody.put("userId", trip.getUserId());
+                    jsonBody.put("place", trip.getPlace());
+                    jsonBody.put("arrival", trip.getArrival());
+                    jsonBody.put("departure", trip.getDeparture());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                Response.Listener<JSONObject> listenerResponse = new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        editTripFragment.setErrorText(context.getResources().getString(R.string.update_trip_successfully), Color.GREEN);
+                        editTripFragment.dismissProgressDialog();
+
+                        try {
+                            Trip trip = new Trip(response.getString("tripId"),
+                                    response.getString("userId"),
+                                    response.getString("place"),
+                                    response.getString("arrival"),
+                                    response.getString("departure"));
+                            tripLocalDAO.updateTrip(trip);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+
+                Response.ErrorListener listenerError = new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        try {
+                            if (error != null) {
+                                String errorRes = new String(error.networkResponse.data);
+                                JSONObject result = new JSONObject(errorRes);
+
+                                if (result.getInt("status") == 500)
+                                    editTripFragment.setErrorText("Error : " + result.get("message"), Color.RED);
+                                else
+                                    editTripFragment.setErrorText(context.getResources().getString(R.string.server_error_0), Color.RED);
+
+                                editTripFragment.dismissProgressDialog();
+                            } else {
+                                editTripFragment.setErrorText(context.getResources().getString(R.string.server_error_1), Color.RED);
+                                editTripFragment.dismissProgressDialog();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (NullPointerException e) {
+                            e.printStackTrace();
+                            editTripFragment.setErrorText(context.getResources().getString(R.string.server_error_1), Color.RED);
+                            editTripFragment.dismissProgressDialog();
+                        }
+                    }
+                };
+
+                editTripFragment.showProgressDialog(context.getResources().getString(R.string.checking_internet));
+
+                if (volleyRequestHandler.hasActiveInternetConnection()) {
+                    editTripFragment.showProgressDialog(context.getResources().getString(R.string.sending_request));
+                    volleyRequestHandler.updateRequest(endpoint, jsonBody, listenerResponse, listenerError, getToken());
+                } else {
+                    editTripFragment.dismissProgressDialog();
+                    editTripFragment.setErrorText(context.getResources().getString(R.string.poor_connection), Color.RED);
+                }
+            }
+        };
+        mainHandler.post(myRunnable);
+    }
+
+    public void deleteTripRequestHandler(final Trip trip) {
+        android.os.Handler mainHandler = new android.os.Handler(context.getMainLooper());
+
+        Runnable myRunnable = new Runnable() {
+            @Override
+            public void run() {
+                JSONObject jsonBody = new JSONObject();
+
+                try {
+                    jsonBody.put("tripId", trip.getTripId());
+                    jsonBody.put("userId", trip.getUserId());
+                    jsonBody.put("place", trip.getPlace());
+                    jsonBody.put("arrival", trip.getArrival());
+                    jsonBody.put("departure", trip.getDeparture());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                Response.Listener<JSONObject> listenerResponse = new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            Trip trip = new Trip(response.getString("tripId"),
+                                    response.getString("userId"),
+                                    response.getString("place"),
+                                    response.getString("arrival"),
+                                    response.getString("departure"));
+                            tripLocalDAO.deleteTrip(trip);
+
+                            editTripFragment.dismissProgressDialog();
+                            editTripFragment.popBackStack();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+
+                Response.ErrorListener listenerError = new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        try {
+                            if (error != null) {
+                                String errorRes = new String(error.networkResponse.data);
+                                JSONObject result = new JSONObject(errorRes);
+
+                                if (result.getInt("status") == 500)
+                                    editTripFragment.setErrorText("Error : " + result.get("message"), Color.RED);
+                                else
+                                    editTripFragment.setErrorText(context.getResources().getString(R.string.server_error_0), Color.RED);
+
+                                editTripFragment.dismissProgressDialog();
+                            } else {
+                                editTripFragment.setErrorText(context.getResources().getString(R.string.server_error_1), Color.RED);
+                                editTripFragment.dismissProgressDialog();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (NullPointerException e) {
+                            e.printStackTrace();
+                            editTripFragment.setErrorText(context.getResources().getString(R.string.server_error_1), Color.RED);
+                            editTripFragment.dismissProgressDialog();
+                        }
+                    }
+                };
+
+                editTripFragment.showProgressDialog(context.getResources().getString(R.string.checking_internet));
+
+                if (volleyRequestHandler.hasActiveInternetConnection()) {
+                    editTripFragment.showProgressDialog(context.getResources().getString(R.string.sending_request));
+                    volleyRequestHandler.deleteRequest(endpoint, jsonBody, listenerResponse, listenerError, getToken());
+                } else {
+                    editTripFragment.dismissProgressDialog();
+                    editTripFragment.setErrorText(context.getResources().getString(R.string.poor_connection), Color.RED);
                 }
             }
         };

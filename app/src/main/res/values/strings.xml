@@ -9,8 +9,8 @@
     <string name="email_hint_text">Email</string>
 
     <string name="cityname_hint_text">City</string>
-    <string name="fromDate_hint_text">From Date</string>
-    <string name="toDate_hint_text">To Date</string>
+    <string name="fromDate_hint_text">Arrival YYYY-MM-DD</string>
+    <string name="toDate_hint_text">Departure YYYY-MM-DD</string>
 
     <string name="login_button_text">Login</string>
     <string name="sign_up_button_text">Sign Up</string>
@@ -19,6 +19,9 @@
     <string name="back_to_login_button_text">Back to login</string>
 
     <string name="saveTrip_button_text">Save</string>
+    <string name="updateTrip_button_text">Update</string>
+    <string name="deleteTrip_button_text">Delete</string>
+    <string name="goBack_button_text">Go Back</string>
 
     <string name="sign_up_text">Sign Up</string>
 
@@ -31,6 +34,7 @@
     <string name="user_registration_done">User registered successfully</string>
 
     <string name="new_trip_added_successfully">New Trip added successfully</string>
+    <string name="update_trip_successfully">Trip updated successfully</string>
 
     <string name="no_results_error">No results found !</string>
     <string name="new_trip_form_error">Please fill form correctly.</string>
@@ -53,7 +57,9 @@
     <string name="nav_profile_text">Profile</string>
 
     <string name="new_trip_activity_heading">Add a new trip !</string>
+    <string name="edit_trip_activity_heading">Edit your trip !</string>
     <string name="saved_trip_activity_heading">Saved Trips !</string>
+
     <string name="title_activity_trips">Trips</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>

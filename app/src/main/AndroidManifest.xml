@@ -29,11 +29,7 @@
             android:label="Sign Up"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".home.HomeActivity"
-            android:label="@string/title_activity_home" />
-        <activity
-            android:name=".trips.TripsActivity"
-            android:label="@string/title_activity_trips"
+            android:name=".bottomNavigation.BottomNavigation"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

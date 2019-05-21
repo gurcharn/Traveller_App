@@ -88,36 +88,16 @@ public class TripLocalDAO extends SQLiteOpenHelper {
         }
     }
 
-    public boolean insertTrip(ArrayList<Trip> tripList){
+    public void insertTrip(ArrayList<Trip> tripList){
         for(Trip trip : tripList)
             insertTrip(trip);
-
-        return true;
-    }
-
-    private void createTableIfNotExist(){
-        if(!isTableExist()){
-            getWritableDB.execSQL(TRIP_CREATE_TABLE);
-        }
-    }
-
-    private boolean isTableExist(){
-        Cursor cursor = getReadableDB.rawQuery("select DISTINCT tbl_name from sqlite_master where tbl_name = '"+TRAVELLER_TABLE_NAME+"'", null);
-        if(cursor!=null) {
-            if(cursor.getCount()>0) {
-                cursor.close();
-                return true;
-            }
-            cursor.close();
-        }
-        return false;
     }
 
     public Trip getTrip(String tripId) {
         Trip trip = null;
 
         try{
-            Cursor cursor = getReadableDB.rawQuery("SELECT * FROM " + TRAVELLER_TABLE_NAME + " WHERE " + TRIP_COLUMN_ID + "=" + tripId , null);
+            Cursor cursor = getReadableDB.rawQuery("SELECT * FROM " + TRAVELLER_TABLE_NAME + " WHERE " + TRIP_COLUMN_ID + "=\'" + tripId + "\'" , null);
 
             if(cursor.getCount() > 0){
                 cursor.moveToFirst();
@@ -164,6 +144,27 @@ public class TripLocalDAO extends SQLiteOpenHelper {
     public boolean deleteTrip(Trip trip) {
         getWritableDB.delete(TRAVELLER_TABLE_NAME, "id = ? ", new String[] { trip.getTripId() });
         return true;
+    }
+
+    private void createTableIfNotExist(){
+        if(!isTableExist()){
+            getWritableDB.execSQL(TRIP_CREATE_TABLE);
+        }
+    }
+
+    private boolean isTableExist(){
+        Cursor cursor = getReadableDB.rawQuery("select DISTINCT tbl_name from sqlite_master where tbl_name = '"+TRAVELLER_TABLE_NAME+"'", null);
+        if(cursor!=null) {
+            if(cursor.getCount()>0) {
+                cursor.close();
+                return true;
+            }
+            cursor.close();
+        }
+        return false;
+    }
+    public void resetTable(){
+            getWritableDB.execSQL("delete from "+TRAVELLER_TABLE_NAME);
     }
 
     /**

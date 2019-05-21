@@ -9,13 +9,10 @@ import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -32,47 +29,67 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class NewTripsFragment extends Fragment {
+public class EditTripFragment extends Fragment {
 
-    private View newTripView;
+    private View editTripView;
     private TextView errorText;
     private AutoCompleteTextView placeAutoCompleteText;
     private EditText fromDate;
     private EditText toDate;
-    private Button saveTripButton;
+    private Button updateButton;
+    private Button deleteButton;
+    private Button goBackButton;
 
     private ProgressDialog progressDialog;
 
     private Geocoder geocoder;
     private ArrayList<String> placesSuggestions;
     private TripRemoteDAO tripRemoteDAO;
+    private TripLocalDAO tripLocalDAO;
+    private Trip trip;
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        newTripView = inflater.inflate(R.layout.new_trips,container,false);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        editTripView = inflater.inflate(R.layout.edit_trip_layout, container, false);
 
-        init(newTripView);
+        init(editTripView);
+        fetchArguments();
         placeTextEditHandler();
         fromDateHandler();
         toDateHandler();
-        saveTripButtonHandler();
+        updateTripButtonHandler();
+        deleteTripButtonHandler();
+        goBackButtonHandler();
 
-        return newTripView;
+        return editTripView;
     }
 
     private void init(View view){
         errorText = (TextView) view.findViewById(R.id.error_text);
+        placeAutoCompleteText = (AutoCompleteTextView) view.findViewById(R.id.place);
         fromDate = (EditText) view.findViewById(R.id.fromDate);
         toDate = (EditText) view.findViewById(R.id.toDate);
-        saveTripButton = (Button) view.findViewById(R.id.saveTrip);
-        placeAutoCompleteText = (AutoCompleteTextView) view.findViewById(R.id.place);
+        updateButton = (Button) view.findViewById(R.id.updateTrip);
+        deleteButton = (Button) view.findViewById(R.id.deleteTrip);
+        goBackButton = (Button) view.findViewById(R.id.goBack);
 
         progressDialog = new ProgressDialog(this.getContext());
         tripRemoteDAO = new TripRemoteDAO(this.getContext(), this);
+        tripLocalDAO = new TripLocalDAO(this.getContext());
+        trip = null;
 
         placesSuggestions = new ArrayList<String>();
         geocoder = new Geocoder(this.getContext());
+    }
+
+    private void fetchArguments(){
+        Bundle bundle = getArguments();
+        trip = tripLocalDAO.getTrip(bundle.getString("tripId"));
+
+        placeAutoCompleteText.setText(trip.getPlace());
+        fromDate.setText(trip.getArrival());
+        toDate.setText(trip.getDeparture());
     }
 
     private void placeTextEditHandler(){
@@ -112,23 +129,43 @@ public class NewTripsFragment extends Fragment {
         });
     }
 
-    private void saveTripButtonHandler(){
-        saveTripButton.setOnClickListener(new View.OnClickListener() {
+    private void updateTripButtonHandler(){
+        updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(isNewTripFormFilled()){
                     setErrorText("", Color.RED);
-                    //To-Do call API for new entry of trips
-                    Trip trip = new Trip(null, null,
-                                        placeAutoCompleteText.getText().toString(),
-                                        fromDate.getText().toString(),toDate.getText().toString());
 
-                    tripRemoteDAO.addNewTripRequestHandler(trip);
+                    tripRemoteDAO.updateTripRequestHandler(trip);
                 } else {
-                    setErrorText(newTripView.getResources().getString(R.string.new_trip_form_error), Color.RED);
+                    setErrorText(editTripView.getResources().getString(R.string.new_trip_form_error), Color.RED);
                 }
             }
         });
+    }
+
+    private void deleteTripButtonHandler(){
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setErrorText("", Color.RED);
+
+                tripRemoteDAO.deleteTripRequestHandler(trip);
+            }
+        });
+    }
+
+    private void goBackButtonHandler(){
+        goBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popBackStack();
+            }
+        });
+    }
+
+    public void popBackStack(){
+        getFragmentManager().popBackStack();
     }
 
     private void getDatePickerDialog(final EditText editText){
@@ -243,5 +280,4 @@ public class NewTripsFragment extends Fragment {
     public void dismissProgressDialog(){
         progressDialog.dismiss();
     }
-
 }

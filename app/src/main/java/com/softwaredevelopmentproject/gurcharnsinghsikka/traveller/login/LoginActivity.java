@@ -10,10 +10,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.bottomNavigation.BottomNavigation;
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.R;
-import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.home.HomeActivity;
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.signup.SignUpActivity;
-import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.trips.TripsActivity;
 
 /**
  * @author Gurcharn Singh Sikka
@@ -171,8 +170,8 @@ public class LoginActivity extends AppCompatActivity {
      * Method to change activity to Home Activity
      */
     private void startHomePage(){
-        Intent homeActivity = new Intent(LoginActivity.this, TripsActivity.class);
-        startActivity(homeActivity);
+        Intent bottomNavigationActivity = new Intent(LoginActivity.this, BottomNavigation.class);
+        startActivity(bottomNavigationActivity);
     }
 
     /**

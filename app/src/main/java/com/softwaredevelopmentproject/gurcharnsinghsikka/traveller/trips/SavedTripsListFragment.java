@@ -1,11 +1,12 @@
 package com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.trips;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +18,10 @@ import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.R;
 
 import java.util.ArrayList;
 
-public class SavedTripsFragment extends Fragment {
+public class SavedTripsListFragment extends Fragment {
 
     private View savedTripsView;
+    private TextView refreshButton;
     private TextView errorText;
     private ListView listView;
 
@@ -33,15 +35,18 @@ public class SavedTripsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        savedTripsView = inflater.inflate(R.layout.saved_trips,container,false);
+        savedTripsView = inflater.inflate(R.layout.saved_trips_list,container,false);
 
         init(savedTripsView);
         retrieveTripList();
+        refreshButtonHandler();
+        toDoListItemClickHandler();
 
         return savedTripsView;
     }
 
     private void init(View view){
+        refreshButton = (TextView) view.findViewById(R.id.refreshButton);
         errorText = (TextView) view.findViewById(R.id.error_text);
         listView = (ListView) view.findViewById(R.id.savedTripsList);
 
@@ -55,13 +60,20 @@ public class SavedTripsFragment extends Fragment {
         listView.setAdapter(customArrayAdapter);
     }
 
+    private void refreshButtonHandler(){
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               retrieveTripList();
+            }
+        });
+    }
+
     private void toDoListItemClickHandler(){
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent editActivity = new Intent(MainActivity.this, EditActivity.class);
-//                editActivity.putExtra("taskId", customArrayAdapter.getTaskItemId(position));
-//                startActivityForResult(editActivity, 16);
+                openEditTripFragment(customArrayAdapter.getTripId(position));
             }
         });
     }
@@ -81,6 +93,19 @@ public class SavedTripsFragment extends Fragment {
         }
 
         customArrayAdapter.notifyDataSetChanged();
+    }
+
+    private void openEditTripFragment(String tripId){
+        FragmentManager fragmentManager = getFragmentManager();
+        EditTripFragment editTripFragment = new EditTripFragment();
+        Bundle bundle = new Bundle();
+
+        bundle.putString("tripId", tripId);
+        editTripFragment.setArguments(bundle);
+
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.savedTrip_container, editTripFragment);
+        fragmentTransaction.addToBackStack(null).addToBackStack(null).commit();
     }
 
     /**

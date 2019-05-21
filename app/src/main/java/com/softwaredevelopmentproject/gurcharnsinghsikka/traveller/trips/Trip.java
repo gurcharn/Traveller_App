@@ -58,7 +58,13 @@ public class Trip {
     }
 
     public void setArrival(String arrival) {
-        this.arrival = new Date(arrival);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+
+        try {
+            this.arrival = dateFormat.parse(arrival + "T00:00:00.000Z");
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public String getDeparture() {
@@ -66,7 +72,13 @@ public class Trip {
     }
 
     public void setDeparture(String departure) {
-        this.departure = new Date(departure);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+
+        try {
+            this.departure = dateFormat.parse(departure + "T00:00:00.000Z");
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override

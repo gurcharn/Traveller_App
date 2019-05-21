@@ -161,4 +161,36 @@ public class VolleyRequestHandler {
         };
         requestQueue.add(request);
     }
+
+    public void updateRequest(String endpoint, JSONObject jsonBody, Response.Listener<JSONObject> listenerResponse, Response.ErrorListener listenerError, final String token){
+        final String url = domain + endpoint;
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.PATCH, url, jsonBody, listenerResponse, listenerError){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<String, String>();
+
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorisation", "Token " + token);
+                return headers;
+            }
+        };
+        requestQueue.add(request);
+    }
+
+    public void deleteRequest(String endpoint, JSONObject jsonBody, Response.Listener<JSONObject> listenerResponse, Response.ErrorListener listenerError, final String token){
+        final String url = domain + endpoint;
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, url, jsonBody, listenerResponse, listenerError){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<String, String>();
+
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorisation", "Token " + token);
+                return headers;
+            }
+        };
+        requestQueue.add(request);
+    }
 }
