@@ -38,7 +38,7 @@ public class TripsFragment extends Fragment {
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        sectionsPageAdapter = new SectionsPageAdapter(getFragmentManager());
+        sectionsPageAdapter = new SectionsPageAdapter(getChildFragmentManager());
         sectionsPageAdapter.addFragment(new NewTripsFragment(), "New");
         sectionsPageAdapter.addFragment(new SavedTripFragment(), "Saved");
         viewPager.setAdapter(sectionsPageAdapter);

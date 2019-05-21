@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.R;
+import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.profile.ProfileFragment;
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.trips.TripsFragment;
 
 public class BottomNavigation extends AppCompatActivity {
@@ -19,6 +20,8 @@ public class BottomNavigation extends AppCompatActivity {
     private BottomNavigationView bottomNavigation;
 
     private Fragment currentFragment;
+    private TripsFragment tripsFragment;
+    private ProfileFragment profileFragment;
     private FragmentManager fragmentManager;
 
     @Override
@@ -54,6 +57,7 @@ public class BottomNavigation extends AppCompatActivity {
                 case R.id.navigation_chat:
                     return true;
                 case R.id.navigation_profile:
+                    startProfileFragment();
                     return true;
             }
             return false;
@@ -61,14 +65,23 @@ public class BottomNavigation extends AppCompatActivity {
     };
 
     private void startTripsFragment(){
-        if(currentFragment instanceof  TripsFragment){
-//            fragmentTransaction.remove(yourfragment).commit()
-            return;
-        } else {
+        if(!(currentFragment instanceof  TripsFragment)){
             currentFragment = new TripsFragment();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.fragmnetContainer, currentFragment);
-            fragmentTransaction.commit();
+            fragmentTransaction.addToBackStack(null).commit();
         }
+    }
+
+    private void startProfileFragment(){
+        destroyCurrentFragemnt();
+        currentFragment = new ProfileFragment();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragmnetContainer, currentFragment);
+        fragmentTransaction.addToBackStack(null).commit();
+    }
+
+    private void destroyCurrentFragemnt(){
+        fragmentManager.beginTransaction().remove(currentFragment).commit();
     }
 }

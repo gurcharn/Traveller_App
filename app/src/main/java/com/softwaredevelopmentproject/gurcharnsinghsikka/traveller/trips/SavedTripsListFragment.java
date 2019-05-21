@@ -64,7 +64,8 @@ public class SavedTripsListFragment extends Fragment {
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               retrieveTripList();
+                showProgressDialog(getResources().getString(R.string.trip_sending_request));
+                retrieveTripList();
             }
         });
     }

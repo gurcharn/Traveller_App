@@ -150,7 +150,7 @@ public class TripRemoteDAO {
                             tripLocalDAO.resetTable();
                             tripLocalDAO.insertTrip(tripArrayList);
                         }
-                        savedTripsListFragment.setErrorText("", Color.RED);
+                        savedTripsListFragment.setErrorText("Trip list updated !", Color.GREEN);
                         savedTripsListFragment.dismissProgressDialog();
                     }
                 };
@@ -167,27 +167,21 @@ public class TripRemoteDAO {
                                     savedTripsListFragment.setErrorText("Error : " + result.get("message"), Color.RED);
                                 else
                                     savedTripsListFragment.setErrorText(context.getResources().getString(R.string.server_error_0), Color.RED);
-
-                                savedTripsListFragment.dismissProgressDialog();
                             } else {
                                 savedTripsListFragment.setErrorText(context.getResources().getString(R.string.server_error_1), Color.RED);
-                                savedTripsListFragment.dismissProgressDialog();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         } catch (NullPointerException e) {
                             e.printStackTrace();
                             savedTripsListFragment.setErrorText(context.getResources().getString(R.string.server_error_1), Color.RED);
-                            savedTripsListFragment.dismissProgressDialog();
                         }
+                        savedTripsListFragment.dismissProgressDialog();
                     }
                 };
 
-                savedTripsListFragment.showProgressDialog(context.getResources().getString(R.string.checking_internet));
-
                 if (volleyRequestHandler.hasActiveInternetConnection()) {
                     String params = "?userId=" + getUserId();
-                    savedTripsListFragment.showProgressDialog(context.getResources().getString(R.string.trip_sending_request));
                     volleyRequestHandler.getRequestWithArrayResult(endpoint + params, listenerResponse, listenerError, getToken());
                 } else {
                     savedTripsListFragment.dismissProgressDialog();
