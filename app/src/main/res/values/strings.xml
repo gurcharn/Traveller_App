@@ -29,6 +29,8 @@
     <string name="login_endpoint">login</string>
     <string name="signup_endpoint">signUp</string>
     <string name="trip_endpoint">secure/trip</string>
+    <string name="profile_endpoint">secure/user</string>
+    <string name="update_profile_endpoint">/update/userProfile</string>
 
     <string name="user_not_registered">User not registered \nServer Error \nPlease try again later</string>
     <string name="user_registration_done">User registered successfully</string>
@@ -43,6 +45,7 @@
     <string name="checking_internet">Checking Internet Connection</string>
     <string name="sending_request">Sending Request</string>
     <string name="trip_sending_request">Fetching Trips</string>
+    <string name="profile_fetch_request">Fetching Profile</string>
 
     <string name="server_error_0">Server Error</string>
     <string name="server_error_1">Server Error \nPlease try again later</string>
@@ -59,6 +62,8 @@
     <string name="new_trip_activity_heading">Add a new trip !</string>
     <string name="edit_trip_activity_heading">Edit your trip !</string>
     <string name="saved_trip_activity_heading">Saved Trips !</string>
+    <string name="profile_activity_heading">Profile</string>
+    <string name="edit_profile_activity_heading">Edit Profile</string>
 
     <string name="title_activity_trips">Trips</string>
     <string name="tab_text_1">Tab 1</string>

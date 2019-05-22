@@ -163,6 +163,7 @@ public class TripLocalDAO extends SQLiteOpenHelper {
         }
         return false;
     }
+
     public void resetTable(){
             getWritableDB.execSQL("delete from "+TRAVELLER_TABLE_NAME);
     }

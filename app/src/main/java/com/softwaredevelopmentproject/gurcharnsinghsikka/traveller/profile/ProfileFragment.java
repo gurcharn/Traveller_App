@@ -30,7 +30,7 @@ public class ProfileFragment extends Fragment {
     private void startViewProfileFragment(){
         ViewProfileFragment viewProfileFragment = new ViewProfileFragment();
 
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getChildFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.profile_container, viewProfileFragment);
         fragmentTransaction.addToBackStack(null).addToBackStack(null).commit();

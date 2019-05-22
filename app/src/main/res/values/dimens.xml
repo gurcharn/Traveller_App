@@ -1,9 +1,13 @@
 <resources>
     <dimen name="layout_padding">20dp</dimen>
+    <dimen name="layout_margin">10dp</dimen>
     <dimen name="empty_view_padding">50dp</dimen>
 
     <dimen name="error_text_size">15sp</dimen>
     <dimen name="error_text_padding">5dp</dimen>
+
+    <dimen name="image_radius">100dp</dimen>
+    <dimen name="image_size">150dp</dimen>
 
     <dimen name="text_size">25sp</dimen>
     <dimen name="text_button_size">25sp</dimen>
