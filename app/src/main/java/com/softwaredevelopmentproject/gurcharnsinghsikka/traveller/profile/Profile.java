@@ -12,10 +12,11 @@ public class Profile {
     private String gender;
     private String bio;
     private String email;
+    private String phone;
     private String facebook;
     private List<String> likes;
 
-    public Profile(String userId, String firstName, String lastName, String age, String gender, String bio, String email, String facebook, List<String> likes) {
+    public Profile(String userId, String firstName, String lastName, String age, String gender, String bio, String email, String phone, String facebook, List<String> likes) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -23,11 +24,12 @@ public class Profile {
         this.gender = gender;
         this.bio = bio;
         this.email = email;
+        this.phone = phone;
         this.facebook = facebook;
         this.likes = likes;
     }
 
-    public Profile(String userId, String firstName, String lastName, String age, String gender, String bio, String email, String facebook, String likes) {
+    public Profile(String userId, String firstName, String lastName, String age, String gender, String bio, String email, String phone, String facebook, String likes) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -35,6 +37,7 @@ public class Profile {
         this.gender = gender;
         this.bio = bio;
         this.email = email;
+        this.phone = phone;
         this.facebook = facebook;
         setLikes(likes);
     }
@@ -95,6 +98,14 @@ public class Profile {
         this.email = email;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public String getFacebook() {
         return facebook;
     }
@@ -113,7 +124,7 @@ public class Profile {
 
     public void setLikes(String likes) {
         this.likes = new ArrayList<>();
-        String[] string = likes.split(",");
+        String[] string = likes.split(", ");
         for (String s : string)
             this.likes.add(s);
     }

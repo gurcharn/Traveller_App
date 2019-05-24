@@ -39,6 +39,7 @@ public class LoginLocalDAO extends SQLiteOpenHelper {
      */
     public LoginLocalDAO(Context context){
         super(context, TRAVELLER_DATABASE_NAME, null, 1);
+        createTableIfNotExist();
     }
 
     /**
@@ -58,8 +59,10 @@ public class LoginLocalDAO extends SQLiteOpenHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(LOGIN_DROP_TABLE);
-        db.execSQL(LOGIN_CREATE_TABLE);
+        if(isTableExist()) {
+            db.execSQL(LOGIN_DROP_TABLE);
+            db.execSQL(LOGIN_CREATE_TABLE);
+        }
     }
 
     /**
@@ -68,6 +71,7 @@ public class LoginLocalDAO extends SQLiteOpenHelper {
      * @return boolean
      */
     public boolean insertLogin(Login login) {
+        createTableIfNotExist();
         Login loginExists = getLogin();
 
         try{
@@ -77,7 +81,7 @@ public class LoginLocalDAO extends SQLiteOpenHelper {
                 contentValues.put(LOGIN_COLUMN_TOKEN, login.getToken());
                 getWritableDB.insert(TRAVELLER_TABLE_NAME, null, contentValues);
             } else {
-                deleteLogin(loginExists);
+                resetTable();
                 contentValues.put(LOGIN_COLUMN_ID, login.getId());
                 contentValues.put(LOGIN_COLUMN_USERNAME, login.getUsername());
                 contentValues.put(LOGIN_COLUMN_TOKEN, login.getToken());
@@ -88,17 +92,6 @@ public class LoginLocalDAO extends SQLiteOpenHelper {
             e.printStackTrace();
             return false;
         }
-//
-//        try {
-//            resetDb();
-//            contentValues.put(LOGIN_COLUMN_ID, login.getId());
-//            contentValues.put(LOGIN_COLUMN_USERNAME, login.getUsername());
-//            contentValues.put(LOGIN_COLUMN_TOKEN, login.getToken());
-//            getWritableDB.insert(TRAVELLER_TABLE_NAME, null, contentValues);
-//            return true;
-//        }catch (Exception e){
-//            return false;
-//        }
     }
 
     /**
@@ -138,6 +131,28 @@ public class LoginLocalDAO extends SQLiteOpenHelper {
     public boolean deleteLogin(Login login) {
         getWritableDB.delete(TRAVELLER_TABLE_NAME, "id = ? ", new String[] { login.getId() });
         return true;
+    }
+
+    private void createTableIfNotExist(){
+        if(!isTableExist()){
+            getWritableDB.execSQL(LOGIN_CREATE_TABLE);
+        }
+    }
+
+    private boolean isTableExist(){
+        Cursor cursor = getReadableDB.rawQuery("select DISTINCT tbl_name from sqlite_master where tbl_name = '"+TRAVELLER_TABLE_NAME+"'", null);
+        if(cursor!=null) {
+            if(cursor.getCount()>0) {
+                cursor.close();
+                return true;
+            }
+            cursor.close();
+        }
+        return false;
+    }
+
+    public void resetTable(){
+        getWritableDB.execSQL("delete from "+TRAVELLER_TABLE_NAME);
     }
 
     /**

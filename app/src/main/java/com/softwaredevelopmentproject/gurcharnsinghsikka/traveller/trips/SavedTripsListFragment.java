@@ -83,13 +83,13 @@ public class SavedTripsListFragment extends Fragment {
         ArrayList<Trip> newTripsList;
 
         tripRemoteDAO.fetchTripsRequestHandler();
+        tripArrayList.clear();
         newTripsList  = tripLocalDAO.getAllTrips();
 
         if(newTripsList == null || newTripsList.isEmpty()){
             setErrorText(getString(R.string.no_results_error), Color.RED);
         } else{
             setErrorText("", Color.RED);
-            tripArrayList.clear();
             tripArrayList.addAll(newTripsList);
         }
 
@@ -106,7 +106,7 @@ public class SavedTripsListFragment extends Fragment {
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.savedTrip_container, editTripFragment);
-        fragmentTransaction.addToBackStack(null).addToBackStack(null).commit();
+        fragmentTransaction.addToBackStack(null).commit();
     }
 
     /**

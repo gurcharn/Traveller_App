@@ -4,11 +4,86 @@
     <string name="username_hint_text">Username</string>
     <string name="password_hint_text">Password</string>
     <string name="confirm_password_hint_text">Confirm Password</string>
+
     <string name="firstname_hint_text">First Name</string>
     <string name="lastname_hint_text">Last Name</string>
-    <string name="email_hint_text">Email</string>
+    <string name="email_hint_text">abc@xyz.com</string>
+    <string name="bio_hint_text">Student / Businessman</string>
+    <string name="phone_hint_text">+353-123456789</string>
+    <string name="social_hint_text">www.facebook.com/my.userID</string>
+    <string name="like_hint_text">Reading, Writing, Travelling, Animals</string>
+    <string name="like_list_heading_hint_text">List of like :</string>
+    <string name="like_list_hint_text">None</string>
+    <string-array name="gender_spinner_strings">
+        <item>Select your gender</item>
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+    <string-array name="age_spinner_strings">
+        <item>Select your age</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+        <item>21</item>
+        <item>22</item>
+        <item>23</item>
+        <item>24</item>
+        <item>25</item>
+        <item>26</item>
+        <item>27</item>
+        <item>28</item>
+        <item>29</item>
+        <item>30</item>
+        <item>41</item>
+        <item>42</item>
+        <item>43</item>
+        <item>44</item>
+        <item>45</item>
+        <item>46</item>
+        <item>47</item>
+        <item>48</item>
+        <item>49</item>
+        <item>50</item>
+        <item>61</item>
+        <item>62</item>
+        <item>63</item>
+        <item>64</item>
+        <item>65</item>
+        <item>66</item>
+        <item>67</item>
+        <item>68</item>
+        <item>69</item>
+        <item>70</item>
+        <item>71</item>
+        <item>72</item>
+        <item>73</item>
+        <item>74</item>
+        <item>75</item>
+        <item>76</item>
+        <item>77</item>
+        <item>78</item>
+        <item>79</item>
+        <item>80</item>
+    </string-array>
 
-    <string name="cityname_hint_text">City</string>
+    <string name="cityname_hint_text">City, Country</string>
     <string name="fromDate_hint_text">Arrival YYYY-MM-DD</string>
     <string name="toDate_hint_text">Departure YYYY-MM-DD</string>
 
@@ -17,6 +92,8 @@
     <string name="forgot_password_button_text">Forgot Password?</string>
     <string name="reset_Form_button_text">Reset form</string>
     <string name="back_to_login_button_text">Back to login</string>
+    <string name="add_like_button_text">Add Like</string>
+    <string name="cancel_button_text">Cancel</string>
 
     <string name="saveTrip_button_text">Save</string>
     <string name="updateTrip_button_text">Update</string>
@@ -31,6 +108,9 @@
     <string name="trip_endpoint">secure/trip</string>
     <string name="profile_endpoint">secure/user</string>
     <string name="update_profile_endpoint">/update/userProfile</string>
+    <string name="places_endpoint">secure/places</string>
+    <string name="textSearch_endpoint">/textSearch</string>
+    <string name="nearby_endpoint">/nearby</string>
 
     <string name="user_not_registered">User not registered \nServer Error \nPlease try again later</string>
     <string name="user_registration_done">User registered successfully</string>
@@ -39,13 +119,18 @@
     <string name="update_trip_successfully">Trip updated successfully</string>
 
     <string name="no_results_error">No results found !</string>
+    <string name="no_suggestions_error">No Suggestions found !</string>
     <string name="new_trip_form_error">Please fill form correctly.</string>
 
+    <string name="profile_logout">Signing out ...</string>
     <string name="poor_connection">Poor Internet Connection</string>
     <string name="checking_internet">Checking Internet Connection</string>
     <string name="sending_request">Sending Request</string>
     <string name="trip_sending_request">Fetching Trips</string>
     <string name="profile_fetch_request">Fetching Profile</string>
+    <string name="profile_update_request">Updating Profile</string>
+    <string name="profile_form_check">Validating form</string>
+    <string name="receiving_suggestions_request">Receiving Suggestions</string>
 
     <string name="server_error_0">Server Error</string>
     <string name="server_error_1">Server Error \nPlease try again later</string>
@@ -64,6 +149,11 @@
     <string name="saved_trip_activity_heading">Saved Trips !</string>
     <string name="profile_activity_heading">Profile</string>
     <string name="edit_profile_activity_heading">Edit Profile</string>
+
+    <string name="places_suggestion_activity_heading">Suggested Places</string>
+    <string name="places_name">First And Last Name</string>
+    <string name="places_rating">5.0</string>
+    <string name="places_address">11, Some Street, City, Country - 00AA11XYZ</string>
 
     <string name="title_activity_trips">Trips</string>
     <string name="tab_text_1">Tab 1</string>

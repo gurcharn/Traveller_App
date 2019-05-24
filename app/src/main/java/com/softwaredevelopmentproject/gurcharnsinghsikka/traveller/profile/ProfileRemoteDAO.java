@@ -63,10 +63,11 @@ public class ProfileRemoteDAO {
                                     response.getString("userId"),
                                     response.getString("firstName"),
                                     response.getString("lastName"),
-                                    response.getString("dateOfBirth"),
+                                    response.getString("age"),
                                     response.getString("gender"),
                                     response.getString("bio"),
                                     response.getString("email"),
+                                    response.getString("phone"),
                                     response.getString("facebook"),
                                     translateLikesJSONArray(response.getJSONArray("likes"))
                             );
@@ -117,12 +118,97 @@ public class ProfileRemoteDAO {
         mainHandler.post(myRunnable);
     }
 
-    public void updateProfileRequestHandler(){
+    public void updateProfileRequestHandler(final Profile profile) {
+        android.os.Handler mainHandler = new android.os.Handler(context.getMainLooper());
 
-    }
+        Runnable myRunnable = new Runnable() {
+            @Override
+            public void run() {
+                JSONObject jsonBody = new JSONObject();
 
-    public void deleteProfileRequestHandler(){
+                try {
+                    jsonBody.put("userId", profile.getUserId());
+                    jsonBody.put("firstName", profile.getFirstName());
+                    jsonBody.put("lastName", profile.getLastName());
+                    jsonBody.put("age", profile.getAge());
+                    jsonBody.put("gender", profile.getGender());
+                    jsonBody.put("bio", profile.getBio());
+                    jsonBody.put("email", profile.getEmail());
+                    jsonBody.put("phone", profile.getPhone());
+                    jsonBody.put("facebook", profile.getFacebook());
+                    jsonBody.put("likes", translateLikeList(profile.getLikesList()));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
+                Response.Listener<JSONObject> listenerResponse = new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        editProfileFragment.setErrorText("", Color.GREEN);
+                        editProfileFragment.showProgressDialog(context.getResources().getString(R.string.profile_update_request));
+
+                        try {
+                            Profile profile = new Profile(
+                                    response.getString("userId"),
+                                    response.getString("firstName"),
+                                    response.getString("lastName"),
+                                    response.getString("age"),
+                                    response.getString("gender"),
+                                    response.getString("bio"),
+                                    response.getString("email"),
+                                    response.getString("phone"),
+                                    response.getString("facebook"),
+                                    translateLikesJSONArray(response.getJSONArray("likes")));
+                            profileLocalDAO.resetTable();
+                            profileLocalDAO.insertProfile(profile);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        editProfileFragment.dismissProgressDialog();
+                        editProfileFragment.popBackStack();
+                    }
+                };
+
+                Response.ErrorListener listenerError = new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        try {
+                            if (error != null) {
+                                String errorRes = new String(error.networkResponse.data);
+                                JSONObject result = new JSONObject(errorRes);
+
+                                if (result.getInt("status") == 500)
+                                    editProfileFragment.setErrorText("Error : " + result.get("message"), Color.RED);
+                                else
+                                    editProfileFragment.setErrorText(context.getResources().getString(R.string.server_error_0), Color.RED);
+
+                                editProfileFragment.dismissProgressDialog();
+                            } else {
+                                editProfileFragment.setErrorText(context.getResources().getString(R.string.server_error_1), Color.RED);
+                                editProfileFragment.dismissProgressDialog();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (NullPointerException e) {
+                            e.printStackTrace();
+                            editProfileFragment.setErrorText(context.getResources().getString(R.string.server_error_1), Color.RED);
+                            editProfileFragment.dismissProgressDialog();
+                        }
+                    }
+                };
+
+                editProfileFragment.showProgressDialog(context.getResources().getString(R.string.checking_internet));
+
+                if (volleyRequestHandler.hasActiveInternetConnection()) {
+                    editProfileFragment.showProgressDialog(context.getResources().getString(R.string.sending_request));
+                    volleyRequestHandler.updateRequest(endpoint + updateProfileEndpoint, jsonBody, listenerResponse, listenerError, getToken());
+                } else {
+                    editProfileFragment.dismissProgressDialog();
+                    editProfileFragment.setErrorText(context.getResources().getString(R.string.poor_connection), Color.RED);
+                }
+            }
+        };
+        mainHandler.post(myRunnable);
     }
 
     private List<String> translateLikesJSONArray(JSONArray jsonArray){
@@ -136,6 +222,15 @@ public class ProfileRemoteDAO {
             }
 
         return likes;
+    }
+
+    private JSONArray translateLikeList(List<String> likesList){
+        JSONArray jsonArray = new JSONArray();
+
+        for(String s : likesList)
+            jsonArray.put(s);
+
+        return jsonArray;
     }
 
     public String getUserId(){

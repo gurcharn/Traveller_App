@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingTop="@dimen/text_padding"
+    android:paddingBottom="@dimen/text_padding" >
+
+    <ImageView
+        android:id="@+id/iconImage"
+        android:layout_width="@dimen/icon_size"
+        android:layout_height="@dimen/icon_size"
+        android:paddingTop="@dimen/text_padding"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/ic_locate_black_24dp" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/text_padding"
+        android:paddingBottom="@dimen/text_padding"
+        android:text="@string/places_name"
+        android:textColor="@color/colorBlack"
+        android:layout_toRightOf="@id/iconImage"
+        android:layout_alignParentTop="true"
+        android:textSize="@dimen/text_size"/>
+
+    <TextView
+        android:id="@+id/rating"
+        android:paddingLeft="@dimen/text_padding"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/name"
+        android:layout_toRightOf="@id/iconImage"
+        android:text="@string/places_rating"
+        android:textColor="@color/colorBlack"
+        android:drawableLeft="@drawable/ic_star_black_24dp"
+        android:drawableTint="@color/colorOrange" />
+
+    <TextView
+        android:id="@+id/address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/text_padding"
+        android:layout_below="@+id/rating"
+        android:layout_toRightOf="@id/iconImage"
+        android:text="@string/places_address"
+        android:textColor="@color/colorBlack" />
+
+</RelativeLayout>

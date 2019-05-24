@@ -8,8 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import java.util.List;
-
 public class ProfileLocalDAO extends SQLiteOpenHelper {
 
     private static final String TRAVELLER_DATABASE_NAME = "Traveller.db";
@@ -21,6 +19,7 @@ public class ProfileLocalDAO extends SQLiteOpenHelper {
     private final String PROFILE_COLUMN_GENDER = "gender";
     private final String PROFILE_COLUMN_BIO = "bio";
     private final String PROFILE_COLUMN_EMAIL = "email";
+    private final String PROFILE_COLUMN_PHONE = "phone";
     private final String PROFILE_COLUMN_FACEBOOK = "facebook";
     private final String PROFILE_COLUMN_LIKES = "likes";
 
@@ -32,6 +31,7 @@ public class ProfileLocalDAO extends SQLiteOpenHelper {
                                                 PROFILE_COLUMN_GENDER + " text," +
                                                 PROFILE_COLUMN_BIO + " text," +
                                                 PROFILE_COLUMN_EMAIL + " text," +
+                                                PROFILE_COLUMN_PHONE + " text," +
                                                 PROFILE_COLUMN_FACEBOOK + " text," +
                                                 PROFILE_COLUMN_LIKES + " text" +
                                                 ")";
@@ -70,6 +70,7 @@ public class ProfileLocalDAO extends SQLiteOpenHelper {
     }
 
     public void insertProfile(Profile profile) {
+        createTableIfNotExist();
         Profile profileExist = getProfile(profile.getUserId());
 
         if (profileExist == null) {
@@ -80,6 +81,7 @@ public class ProfileLocalDAO extends SQLiteOpenHelper {
             contentValues.put(PROFILE_COLUMN_GENDER, profile.getGender());
             contentValues.put(PROFILE_COLUMN_BIO, profile.getBio());
             contentValues.put(PROFILE_COLUMN_EMAIL, profile.getEmail());
+            contentValues.put(PROFILE_COLUMN_PHONE, profile.getPhone());
             contentValues.put(PROFILE_COLUMN_FACEBOOK, profile.getFacebook());
             contentValues.put(PROFILE_COLUMN_LIKES, profile.getLikesString());
             try {
@@ -110,8 +112,8 @@ public class ProfileLocalDAO extends SQLiteOpenHelper {
                                     cursor.getString(5),
                                     cursor.getString(6),
                                     cursor.getString(7),
-                                    cursor.getString(8));
-
+                                    cursor.getString(8),
+                                    cursor.getString(9));
             }
             cursor.close();
         } catch(SQLException e){
@@ -136,6 +138,7 @@ public class ProfileLocalDAO extends SQLiteOpenHelper {
         contentValues.put(PROFILE_COLUMN_GENDER, profile.getGender());
         contentValues.put(PROFILE_COLUMN_BIO, profile.getBio());
         contentValues.put(PROFILE_COLUMN_EMAIL, profile.getEmail());
+        contentValues.put(PROFILE_COLUMN_PHONE, profile.getPhone());
         contentValues.put(PROFILE_COLUMN_FACEBOOK, profile.getFacebook());
         contentValues.put(PROFILE_COLUMN_LIKES, profile.getLikesString());
         getWritableDB.update(TRAVELLER_TABLE_NAME, contentValues, "id = ? ", new String[] { profile.getUserId() } );

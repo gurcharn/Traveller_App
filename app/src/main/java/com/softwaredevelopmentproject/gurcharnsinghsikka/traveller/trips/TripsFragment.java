@@ -22,7 +22,7 @@ public class TripsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        tripsFragment = inflater.inflate(R.layout.activity_home,container,false);
+        tripsFragment = inflater.inflate(R.layout.trips_tabs_layout,container,false);
 
         init(tripsFragment);
 

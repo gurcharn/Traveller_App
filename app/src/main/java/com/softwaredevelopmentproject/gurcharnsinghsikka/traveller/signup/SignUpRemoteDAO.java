@@ -6,8 +6,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.R;
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.volleyService.VolleyRequestHandler;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Arrays;
 
 /**
  * @author Gurcharn Singh Sikka
@@ -56,6 +60,8 @@ public class SignUpRemoteDAO {
                     jsonUserInfo.put("firstName", firstName);
                     jsonUserInfo.put("lastName", lastName);
                     jsonUserInfo.put("email", email);
+                    jsonUserInfo.put("bio", "I love Travelling");
+                    jsonUserInfo.put("likes", new JSONArray(Arrays.asList("Hotels", "Museum", "History", "Bars", "Restaurant", "Tourist","Attraction")));
 
                     jsonLoginInfo.put("username", username);
                     jsonLoginInfo.put("password", password);
@@ -80,6 +86,7 @@ public class SignUpRemoteDAO {
                                 signUpActivity.resetSignUpForm();
                                 signUpActivity.setErrorText(context.getResources().getString(R.string.user_registration_done), Color.GREEN);
                                 signUpActivity.snackBar(context.getResources().getString(R.string.user_registration_done));
+                                signUpActivity.finishActivity();
                             }
                         } catch (JSONException e) {
                             signUpActivity.setErrorText(context.getResources().getString(R.string.server_error_1), Color.RED);

@@ -10,6 +10,8 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
@@ -120,6 +122,7 @@ public class VolleyRequestHandler {
                 return headers;
             }
         };
+        setRetryPolicy(request);
         requestQueue.add(request);
     }
 
@@ -136,6 +139,7 @@ public class VolleyRequestHandler {
                 return headers;
             }
         };
+        setRetryPolicy(request);
         requestQueue.add(request);
     }
 
@@ -159,6 +163,24 @@ public class VolleyRequestHandler {
                 return headers;
             }
         };
+        setRetryPolicy(request);
+        requestQueue.add(request);
+    }
+
+    public void postRequestWithArrayResult(String endpoint, JSONArray jsonBody, Response.Listener<JSONArray> listenerResponse, Response.ErrorListener listenerError, final String token){
+        final String url = domain + endpoint;
+
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.POST, url, jsonBody, listenerResponse, listenerError){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<String, String>();
+
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorisation", "Token " + token);
+                return headers;
+            }
+        };
+        setRetryPolicy(request);
         requestQueue.add(request);
     }
 
@@ -175,6 +197,7 @@ public class VolleyRequestHandler {
                 return headers;
             }
         };
+        setRetryPolicy(request);
         requestQueue.add(request);
     }
 
@@ -192,5 +215,43 @@ public class VolleyRequestHandler {
             }
         };
         requestQueue.add(request);
+    }
+
+    private void setRetryPolicy(JsonArrayRequest jsonArrayRequest){
+        jsonArrayRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+    }
+
+    private void setRetryPolicy(JsonObjectRequest jsonObjectRequest){
+        jsonObjectRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
     }
 }

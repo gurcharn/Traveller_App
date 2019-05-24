@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.R;
+import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.places.PlacesFragment;
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.profile.ProfileFragment;
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.trips.TripsFragment;
 
@@ -20,8 +21,6 @@ public class BottomNavigation extends AppCompatActivity {
     private BottomNavigationView bottomNavigation;
 
     private Fragment currentFragment;
-    private TripsFragment tripsFragment;
-    private ProfileFragment profileFragment;
     private FragmentManager fragmentManager;
 
     @Override
@@ -51,6 +50,7 @@ public class BottomNavigation extends AppCompatActivity {
                     startTripsFragment();
                     return true;
                 case R.id.navigation_places:
+                    startPlacesFragment();
                     return true;
                 case R.id.navigation_people:
                     return true;
@@ -71,6 +71,14 @@ public class BottomNavigation extends AppCompatActivity {
             fragmentTransaction.replace(R.id.fragmnetContainer, currentFragment);
             fragmentTransaction.addToBackStack(null).commit();
         }
+    }
+
+    private void startPlacesFragment(){
+        destroyCurrentFragemnt();
+        currentFragment = new PlacesFragment();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragmnetContainer, currentFragment);
+        fragmentTransaction.addToBackStack(null).commit();
     }
 
     private void startProfileFragment(){

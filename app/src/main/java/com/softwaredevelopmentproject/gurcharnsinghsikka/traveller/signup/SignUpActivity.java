@@ -109,9 +109,13 @@ public class SignUpActivity extends AppCompatActivity {
         backToLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                finishActivity();
             }
         });
+    }
+
+    public void finishActivity(){
+        finish();
     }
 
     /**
@@ -148,16 +152,14 @@ public class SignUpActivity extends AppCompatActivity {
      * @return boolean
      */
     private boolean isEditTextFilled( EditText editText){
+        String string = editText.getText().toString().trim();
+
         if(editText == null){
             editText.setError("Required");
             editText.requestFocus();
             return false;
-        } else if(editText.getText().toString().isEmpty()){
+        } else if(string.isEmpty()){
             editText.setError("Required");
-            editText.requestFocus();
-            return false;
-        } else if(editText.getText().toString().contains(" ")){
-            editText.setError("Spaces not allowed");
             editText.requestFocus();
             return false;
         } else{

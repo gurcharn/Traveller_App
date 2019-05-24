@@ -18,6 +18,18 @@
         android:textColor="@color/colorBlack"/>
 
     <TextView
+        android:id="@+id/logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/text_padding"
+        android:drawableRight="@drawable/ic_exit_to_app_black_24dp"
+        android:drawableTint="@color/colorRed"
+        android:clickable="true"
+        android:textSize="@dimen/text_size"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"/>
+
+    <TextView
         android:id="@+id/refreshButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -26,8 +38,8 @@
         android:drawableTint="@color/colorSkyBlue"
         android:clickable="true"
         android:textSize="@dimen/text_size"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"/>
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/logout"/>
 
     <TextView
         android:id="@+id/editButton"
@@ -59,7 +71,6 @@
             android:src="@drawable/profile_placeholder_male" />
 
     </com.jcminarro.roundkornerlayout.RoundKornerRelativeLayout>
-
 
     <TextView
         android:id="@+id/error_text"
@@ -153,12 +164,12 @@
                 android:textSize="@dimen/text_size"
                 android:textColor="@color/colorBlack" />
 
+            <include
+                layout="@layout/empty_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/social"/>
+
         </RelativeLayout>
-
     </ScrollView>
-
-
-
-
-
 </RelativeLayout>
