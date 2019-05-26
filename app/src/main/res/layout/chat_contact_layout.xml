@@ -1,52 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout
-    android:id="@+id/places_container"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="@dimen/layout_padding"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/layout_margin"
     android:orientation="vertical" >
 
     <TextView
         android:id="@+id/heading"
         android:paddingTop="@dimen/text_padding"
         android:paddingBottom="@dimen/text_padding"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/places_suggestion_activity_heading"
+        android:text="@string/chat_activity_heading"
         android:textSize="@dimen/text_size"
         android:textColor="@color/colorBlack"/>
 
     <TextView
+        android:id="@+id/refreshButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/text_padding"
+        android:drawableRight="@drawable/ic_refresh_black_24dp"
+        android:drawableTint="@color/colorSkyBlue"
+        android:clickable="true"
+        android:textSize="@dimen/text_size"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"/>
+
+    <TextView
         android:id="@+id/error_text"
+        android:layout_marginLeft="@dimen/text_padding"
+        android:layout_marginRight="@dimen/text_padding"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text=""
         android:textSize="@dimen/error_text_size"
         android:textColor="@color/colorRed"
-        android:background="@color/colorWhite"
-        android:layout_below="@id/heading"/>
-
-    <Spinner
-        android:id="@+id/tripsDropDown"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/error_text"/>
+        android:layout_below="@id/heading" />
 
     <ListView
-        android:id="@+id/placeSuggestionList"
+        android:id="@+id/contactList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/text_size"
-        android:layout_below="@id/tripsDropDown" />
+        android:layout_below="@id/error_text" />
 
     <include
         layout="@layout/empty_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/placeSuggestionList"/>
+        android:layout_below="@id/contactList" />
 
 </RelativeLayout>

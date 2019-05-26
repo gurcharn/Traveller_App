@@ -141,7 +141,7 @@ public class ProfileLocalDAO extends SQLiteOpenHelper {
         contentValues.put(PROFILE_COLUMN_PHONE, profile.getPhone());
         contentValues.put(PROFILE_COLUMN_FACEBOOK, profile.getFacebook());
         contentValues.put(PROFILE_COLUMN_LIKES, profile.getLikesString());
-        getWritableDB.update(TRAVELLER_TABLE_NAME, contentValues, "id = ? ", new String[] { profile.getUserId() } );
+        getWritableDB.update(TRAVELLER_TABLE_NAME, contentValues, PROFILE_COLUMN_ID + " = ? ", new String[] { profile.getUserId() } );
         return true;
     }
 

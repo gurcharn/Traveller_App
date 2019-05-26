@@ -311,6 +311,7 @@ public class TripRemoteDAO {
                 Response.ErrorListener listenerError = new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        System.out.println("Error : " + error.toString());
                         try {
                             if (error != null) {
                                 String errorRes = new String(error.networkResponse.data);

@@ -111,6 +111,10 @@
     <string name="places_endpoint">secure/places</string>
     <string name="textSearch_endpoint">/textSearch</string>
     <string name="nearby_endpoint">/nearby</string>
+    <string name="people_endpoint">secure/people</string>
+    <string name="chat_endpoint">secure/chat</string>
+    <string name="chatId_endpoint">/chatId</string>
+    <string name="userId_endpoint">/userId</string>
 
     <string name="user_not_registered">User not registered \nServer Error \nPlease try again later</string>
     <string name="user_registration_done">User registered successfully</string>
@@ -154,6 +158,15 @@
     <string name="places_name">First And Last Name</string>
     <string name="places_rating">5.0</string>
     <string name="places_address">11, Some Street, City, Country - 00AA11XYZ</string>
+
+    <string name="people_suggestion_activity_heading">Suggested People</string>
+    <string name="people_name">First And Last Name</string>
+    <string name="people_bio">I love Travelling</string>
+    <string name="people_age">24 M</string>
+    <string name="people_interests">Travelling, Pubs, Mountains, Books</string>
+
+    <string name="chat_activity_heading">Chats</string>
+    <string name="chat_activity_name">First Name</string>
 
     <string name="title_activity_trips">Trips</string>
     <string name="tab_text_1">Tab 1</string>

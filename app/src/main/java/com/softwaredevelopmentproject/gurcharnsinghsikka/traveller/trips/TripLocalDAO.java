@@ -137,12 +137,12 @@ public class TripLocalDAO extends SQLiteOpenHelper {
         contentValues.put(TRIP_COLUMN_PLACE, trip.getPlace());
         contentValues.put(TRIP_COLUMN_ARIVAL_DATE, trip.getArrival());
         contentValues.put(TRIP_COLUMN_DEPARTURE_DATE, trip.getDeparture());
-        getWritableDB.update(TRAVELLER_TABLE_NAME, contentValues, "id = ? ", new String[] { trip.getTripId() } );
+        getWritableDB.update(TRAVELLER_TABLE_NAME, contentValues, TRIP_COLUMN_ID + " = ? ", new String[] { trip.getTripId() } );
         return true;
     }
 
     public boolean deleteTrip(Trip trip) {
-        getWritableDB.delete(TRAVELLER_TABLE_NAME, "id = ? ", new String[] { trip.getTripId() });
+        getWritableDB.delete(TRAVELLER_TABLE_NAME, TRIP_COLUMN_ID + " = ? ", new String[] { trip.getTripId() });
         return true;
     }
 

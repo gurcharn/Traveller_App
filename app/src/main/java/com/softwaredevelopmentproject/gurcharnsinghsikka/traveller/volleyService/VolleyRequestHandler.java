@@ -214,6 +214,7 @@ public class VolleyRequestHandler {
                 return headers;
             }
         };
+        setRetryPolicy(request);
         requestQueue.add(request);
     }
 

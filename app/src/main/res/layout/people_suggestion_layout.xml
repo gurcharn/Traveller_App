@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout
-    android:id="@+id/places_container"
+    android:id="@+id/people_container"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -16,7 +16,7 @@
         android:paddingBottom="@dimen/text_padding"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/places_suggestion_activity_heading"
+        android:text="@string/people_suggestion_activity_heading"
         android:textSize="@dimen/text_size"
         android:textColor="@color/colorBlack"/>
 
@@ -37,7 +37,7 @@
         android:layout_below="@+id/error_text"/>
 
     <ListView
-        android:id="@+id/placeSuggestionList"
+        android:id="@+id/peopleSuggestionList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/text_size"
@@ -47,6 +47,6 @@
         layout="@layout/empty_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/placeSuggestionList"/>
+        android:layout_below="@id/peopleSuggestionList"/>
 
 </RelativeLayout>

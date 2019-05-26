@@ -56,6 +56,9 @@ public class Trip {
     public String getArrival() {
         return (arrival.getYear()+1900) + "-" + (arrival.getMonth()+1) + "-" + (arrival.getDate());
     }
+    public Date getArrivalDate() {
+        return this.arrival;
+    }
 
     public void setArrival(String arrival) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
@@ -69,6 +72,10 @@ public class Trip {
 
     public String getDeparture() {
         return (departure.getYear()+1900) + "-" + (departure.getMonth()+1) + "-" + (departure.getDate());
+    }
+
+    public Date getDepartureDate() {
+        return this.departure;
     }
 
     public void setDeparture(String departure) {

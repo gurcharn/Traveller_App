@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingTop="@dimen/text_padding"
+    android:paddingBottom="@dimen/text_padding" >
+
+    <ImageView
+        android:id="@+id/profileImage"
+        android:layout_width="@dimen/icon_size"
+        android:layout_height="@dimen/icon_size"
+        android:paddingTop="@dimen/text_padding"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/profile_placeholder_male" />
+
+    <TextView
+        android:id="@+id/age"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/text_padding"
+        android:paddingLeft="@dimen/text_padding"
+        android:layout_below="@+id/profileImage"
+        android:layout_alignParentLeft="true"
+        android:text="@string/people_age"
+        android:textColor="@color/colorBlack" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/text_padding"
+        android:paddingBottom="@dimen/text_padding"
+        android:text="@string/people_name"
+        android:textColor="@color/colorBlack"
+        android:layout_toRightOf="@id/profileImage"
+        android:layout_alignParentTop="true"
+        android:textSize="@dimen/text_size"/>
+
+    <TextView
+        android:id="@+id/bio"
+        android:paddingLeft="@dimen/text_padding"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/name"
+        android:layout_toRightOf="@id/profileImage"
+        android:text="@string/people_bio"
+        android:textColor="@color/colorBlack" />
+
+    <TextView
+        android:id="@+id/interests"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/text_padding"
+        android:layout_below="@+id/bio"
+        android:layout_toRightOf="@id/profileImage"
+        android:text="@string/people_interests"
+        android:textColor="@color/colorBlack" />
+
+</RelativeLayout>

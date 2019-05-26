@@ -40,7 +40,7 @@ public class SavedTripsListFragment extends Fragment {
         init(savedTripsView);
         retrieveTripList();
         refreshButtonHandler();
-        toDoListItemClickHandler();
+        listViewItemClickHandler();
 
         return savedTripsView;
     }
@@ -70,7 +70,7 @@ public class SavedTripsListFragment extends Fragment {
         });
     }
 
-    private void toDoListItemClickHandler(){
+    private void listViewItemClickHandler(){
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

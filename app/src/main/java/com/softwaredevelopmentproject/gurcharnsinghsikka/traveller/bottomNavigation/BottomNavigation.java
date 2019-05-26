@@ -1,5 +1,6 @@
 package com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.bottomNavigation;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -11,6 +12,8 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.R;
+import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.chat.ChatContactActivity;
+import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.people.PeopleFragment;
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.places.PlacesFragment;
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.profile.ProfileFragment;
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.trips.TripsFragment;
@@ -53,8 +56,10 @@ public class BottomNavigation extends AppCompatActivity {
                     startPlacesFragment();
                     return true;
                 case R.id.navigation_people:
+                    startPeopleFragment();
                     return true;
                 case R.id.navigation_chat:
+                    startChatContactActivity();
                     return true;
                 case R.id.navigation_profile:
                     startProfileFragment();
@@ -69,7 +74,7 @@ public class BottomNavigation extends AppCompatActivity {
             currentFragment = new TripsFragment();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.fragmnetContainer, currentFragment);
-            fragmentTransaction.addToBackStack(null).commit();
+            fragmentTransaction.commit();
         }
     }
 
@@ -78,7 +83,21 @@ public class BottomNavigation extends AppCompatActivity {
         currentFragment = new PlacesFragment();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragmnetContainer, currentFragment);
-        fragmentTransaction.addToBackStack(null).commit();
+        fragmentTransaction.commit();
+    }
+
+    private void startPeopleFragment(){
+        destroyCurrentFragemnt();
+        currentFragment = new PeopleFragment();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragmnetContainer, currentFragment);
+        fragmentTransaction.commit();
+    }
+
+    private void startChatContactActivity(){
+        destroyCurrentFragemnt();
+        Intent chatContactActivity = new Intent(BottomNavigation.this, ChatContactActivity.class);
+        startActivity(chatContactActivity);
     }
 
     private void startProfileFragment(){
@@ -86,7 +105,7 @@ public class BottomNavigation extends AppCompatActivity {
         currentFragment = new ProfileFragment();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragmnetContainer, currentFragment);
-        fragmentTransaction.addToBackStack(null).commit();
+        fragmentTransaction.commit();
     }
 
     private void destroyCurrentFragemnt(){

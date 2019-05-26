@@ -6,6 +6,9 @@ import android.graphics.Color;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.R;
+import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.chat.ChatActivity;
+import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.chat.ChatContactActivity;
+import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.chat.CustomArrayAdapter;
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.login.Login;
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.login.LoginLocalDAO;
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.trips.EditTripFragment;
@@ -28,6 +31,8 @@ public class ProfileRemoteDAO {
     private ProfileLocalDAO profileLocalDAO;
     private ViewProfileFragment viewProfileFragment;
     private EditProfileFragment editProfileFragment;
+    private ChatContactActivity chatContactActivity;
+    private ChatActivity chatActivity;
 
     public ProfileRemoteDAO(Context context, ViewProfileFragment viewProfileFragment) {
         this.endpoint = context.getResources().getString(R.string.profile_endpoint);
@@ -47,6 +52,26 @@ public class ProfileRemoteDAO {
         this.volleyRequestHandler = new VolleyRequestHandler(context);
         this.loginLocalDAO = new LoginLocalDAO(context);
         this.editProfileFragment = editProfileFragment;
+    }
+
+    public ProfileRemoteDAO(Context context, ChatContactActivity chatContactActivity) {
+        this.endpoint = context.getResources().getString(R.string.profile_endpoint);
+        this.updateProfileEndpoint = context.getResources().getString(R.string.update_profile_endpoint);
+        this.context = context;
+        this.profileLocalDAO = new ProfileLocalDAO(context);
+        this.volleyRequestHandler = new VolleyRequestHandler(context);
+        this.loginLocalDAO = new LoginLocalDAO(context);
+        this.chatContactActivity = chatContactActivity;
+    }
+
+    public ProfileRemoteDAO(Context context, ChatActivity chatActivity) {
+        this.endpoint = context.getResources().getString(R.string.profile_endpoint);
+        this.updateProfileEndpoint = context.getResources().getString(R.string.update_profile_endpoint);
+        this.context = context;
+        this.profileLocalDAO = new ProfileLocalDAO(context);
+        this.volleyRequestHandler = new VolleyRequestHandler(context);
+        this.loginLocalDAO = new LoginLocalDAO(context);
+        this.chatActivity = chatActivity;
     }
 
     public void getProfileRequestHandler() {
@@ -112,6 +137,70 @@ public class ProfileRemoteDAO {
                 } else {
                     viewProfileFragment.dismissProgressDialog();
                     viewProfileFragment.setErrorText(context.getResources().getString(R.string.poor_connection), Color.RED);
+                }
+            }
+        };
+        mainHandler.post(myRunnable);
+    }
+
+    public void getProfileRequestHandler(final String userId) {
+        android.os.Handler mainHandler = new android.os.Handler(context.getMainLooper());
+
+        Runnable myRunnable = new Runnable() {
+            @Override
+            public void run() {
+                Response.Listener<JSONObject> listenerResponse = new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try{
+                            Profile profile = new Profile(
+                                    response.getString("userId"),
+                                    response.getString("firstName"),
+                                    response.getString("lastName"),
+                                    response.getString("age"),
+                                    response.getString("gender"),
+                                    response.getString("bio"),
+                                    response.getString("email"),
+                                    response.getString("phone"),
+                                    response.getString("facebook"),
+                                    translateLikesJSONArray(response.getJSONArray("likes"))
+                            );
+                            profileLocalDAO.insertProfile(profile);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+
+                Response.ErrorListener listenerError = new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        try {
+                            if (error != null) {
+                                String errorRes = new String(error.networkResponse.data);
+                                JSONObject result = new JSONObject(errorRes);
+
+                                if (result.getInt("status") == 500)
+                                    chatContactActivity.setErrorText("Error : " + result.get("message"), Color.RED);
+                                else
+                                    chatContactActivity.setErrorText(context.getResources().getString(R.string.server_error_0), Color.RED);
+                            } else {
+                                chatContactActivity.setErrorText(context.getResources().getString(R.string.server_error_1), Color.RED);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (NullPointerException e) {
+                            e.printStackTrace();
+                            chatContactActivity.setErrorText(context.getResources().getString(R.string.server_error_1), Color.RED);
+                        }
+                    }
+                };
+
+                if (volleyRequestHandler.hasActiveInternetConnection()) {
+                    String params = "?userId=" + userId;
+                    volleyRequestHandler.getRequest(endpoint + params, listenerResponse, listenerError, getToken());
+                } else {
+                    chatContactActivity.setErrorText(context.getResources().getString(R.string.poor_connection), Color.RED);
                 }
             }
         };

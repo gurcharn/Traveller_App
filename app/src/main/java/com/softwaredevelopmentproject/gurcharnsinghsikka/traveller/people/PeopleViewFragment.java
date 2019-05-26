@@ -1,33 +1,28 @@
-package com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.profile;
+package com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.people;
 
-import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.R;
-import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.login.LoginLocalDAO;
-import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.trips.EditTripFragment;
-import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.trips.TripLocalDAO;
+import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.chat.ChatActivity;
+import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.profile.Profile;
+import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.profile.ProfileLocalDAO;
 
-import java.util.List;
+public class PeopleViewFragment extends Fragment {
 
-public class ViewProfileFragment extends Fragment {
-
-    private View profileView;
-    private TextView logoutButton;
-    private TextView refreshButton;
-    private TextView editButton;
+    private View peopleView;
     private ImageView profileImage;
+    private Button messageButton;
     private TextView errorText;
     private TextView name;
     private TextView age;
@@ -37,34 +32,26 @@ public class ViewProfileFragment extends Fragment {
     private TextView facebook;
     private TextView likes;
 
-    private ProgressDialog progressDialog;
-
-    private LoginLocalDAO loginLocalDAO;
     private ProfileLocalDAO profileLocalDAO;
-    private ProfileRemoteDAO profileRemoteDAO;
-    private TripLocalDAO tripLocalDAO;
+    private Profile profile;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        profileView = inflater.inflate(R.layout.view_profile_layout,container,false);
+        peopleView = inflater.inflate(R.layout.people_view_profile_layout,container,false);
 
-        init(profileView);
-        setProfileDataToView();
+        init(peopleView);
         fetchProfile();
-        refreshButtonHandler();
-        editButtonHandler();
-        logoutButtonHandler();
+        setProfileDataToView();
+        messageButtonHandler();
 
-        return profileView;
+        return peopleView;
     }
 
     private void init(View view){
-        logoutButton = view.findViewById(R.id.logout);
         errorText = view.findViewById(R.id.error_text);
-        refreshButton = view.findViewById(R.id.refreshButton);
-        editButton = view.findViewById(R.id.editButton);
         profileImage = view.findViewById(R.id.profileImage);
+        messageButton = (Button) view.findViewById(R.id.messageButton);
         name = view.findViewById(R.id.name);
         age = view.findViewById(R.id.age);
         bio = view.findViewById(R.id.bio);
@@ -73,62 +60,24 @@ public class ViewProfileFragment extends Fragment {
         facebook = view.findViewById(R.id.social);
         likes = view.findViewById(R.id.likes);
 
-        progressDialog = new ProgressDialog(this.getContext());
-        loginLocalDAO = new LoginLocalDAO(this.getContext());
         profileLocalDAO = new ProfileLocalDAO(this.getContext());
-        profileRemoteDAO = new ProfileRemoteDAO(this.getContext(), this);
-        tripLocalDAO = new TripLocalDAO(this.getContext());
     }
 
-    private void logoutButtonHandler(){
-        logoutButton.setOnClickListener(new View.OnClickListener() {
+    private void messageButtonHandler(){
+        messageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showProgressDialog(getResources().getString(R.string.profile_logout));
-                loginLocalDAO.resetTable();
-                profileLocalDAO.resetTable();
-                tripLocalDAO.resetTable();
-                dismissProgressDialog();
-                getActivity().finish();
+                startChatContactActivity(profile.getUserId());
             }
         });
-    }
-
-    private void refreshButtonHandler(){
-        refreshButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showProgressDialog(getResources().getString(R.string.profile_fetch_request));
-                setErrorText("", Color.RED);
-                fetchProfile();
-            }
-        });
-    }
-
-    private void editButtonHandler(){
-        editButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startEditProfileFragment();
-            }
-        });
-    }
-
-    private void startEditProfileFragment(){
-        EditProfileFragment editProfileFragment = new EditProfileFragment();
-
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.profile_container, editProfileFragment);
-        fragmentTransaction.addToBackStack(null).addToBackStack(null).commit();
     }
 
     private void fetchProfile(){
-        profileRemoteDAO.getProfileRequestHandler();
+        Bundle bundle = getArguments();
+        profile = profileLocalDAO.getProfile(bundle.getString("userId"));
     }
 
     public void setProfileDataToView(){
-        Profile profile = profileLocalDAO.getProfile(profileRemoteDAO.getUserId());
         if(profile != null){
             setProfilePic(profileImage, profile.getGender());
             setTextView(name, profile.getFirstName() + " " + profile.getLastName());
@@ -139,6 +88,7 @@ public class ViewProfileFragment extends Fragment {
             setTextView(facebook, profile.getFacebook());
             setTextView(likes, profile.getLikesString());
         } else {
+            setErrorText("Error : Profile Not found", Color.RED);
             setProfilePic(profileImage, null);
             setTextView(name, null);
             setTextView(age, null);
@@ -148,6 +98,12 @@ public class ViewProfileFragment extends Fragment {
             setTextView(facebook, null);
             setTextView(likes, null);
         }
+    }
+
+    private void startChatContactActivity(String userId){
+        Intent chatContactActivity = new Intent(this.getContext() , ChatActivity.class);
+        chatContactActivity.putExtra("userId", userId);
+        startActivityForResult(chatContactActivity, 18);
     }
 
     private void setProfilePic(ImageView imageView, String gender){
@@ -183,26 +139,5 @@ public class ViewProfileFragment extends Fragment {
     public void setErrorText(String error, int color){
         errorText.setTextColor(color);
         errorText.setText(error);
-    }
-
-    /**
-     * Method to show progress dialog box
-     * @param message
-     */
-    public void showProgressDialog(String message){
-        if(progressDialog.isShowing())
-            progressDialog.setMessage(message);
-        else{
-            progressDialog.setTitle("Profile");
-            progressDialog.setMessage(message);
-            progressDialog.show();
-        }
-    }
-
-    /**
-     * Method to dismiss progress dialog
-     */
-    public void dismissProgressDialog(){
-        progressDialog.dismiss();
     }
 }

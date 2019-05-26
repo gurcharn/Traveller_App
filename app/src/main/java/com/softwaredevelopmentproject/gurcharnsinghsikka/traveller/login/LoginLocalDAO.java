@@ -119,7 +119,7 @@ public class LoginLocalDAO extends SQLiteOpenHelper {
         contentValues.put(LOGIN_COLUMN_ID, login.getId());
         contentValues.put(LOGIN_COLUMN_USERNAME, login.getUsername());
         contentValues.put(LOGIN_COLUMN_TOKEN, login.getToken());
-        getWritableDB.update(TRAVELLER_TABLE_NAME, contentValues, "id = ? ", new String[] { login.getId() } );
+        getWritableDB.update(TRAVELLER_TABLE_NAME, contentValues, LOGIN_COLUMN_ID + " = ? ", new String[] { login.getId() } );
         return true;
     }
 
@@ -129,7 +129,7 @@ public class LoginLocalDAO extends SQLiteOpenHelper {
      * @return boolean
      */
     public boolean deleteLogin(Login login) {
-        getWritableDB.delete(TRAVELLER_TABLE_NAME, "id = ? ", new String[] { login.getId() });
+        getWritableDB.delete(TRAVELLER_TABLE_NAME, LOGIN_COLUMN_ID + " = ? ", new String[] { login.getId() });
         return true;
     }
 
