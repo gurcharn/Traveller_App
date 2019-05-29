@@ -21,12 +21,14 @@ public class CustomArrayAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<Chat> chatArrayList;
     private ProfileLocalDAO profileLocalDAO;
+    private ProfileRemoteDAO profileRemoteDAO;
 
     public CustomArrayAdapter(Context context, ArrayList<Chat> chatArrayList, String myUserId) {
         this.myUserId = myUserId;
         this.context = context;
         this.chatArrayList = chatArrayList;
         this.profileLocalDAO = new ProfileLocalDAO(context);
+        this.profileRemoteDAO = new ProfileRemoteDAO(context, (ChatContactActivity) context);
     }
 
     @Override
@@ -48,6 +50,7 @@ public class CustomArrayAdapter extends BaseAdapter {
 
         Profile profile = getProfile(chatArrayList.get(position));
 
+
         setImage(viewHolder.profileImage, profile.getGender());
         setTextView(viewHolder.name, profile.getFirstName() + " " + profile.getLastName());
 
@@ -56,9 +59,20 @@ public class CustomArrayAdapter extends BaseAdapter {
 
     private Profile getProfile(Chat chat){
         if(chat.getUserOne().equals(myUserId))
-            return profileLocalDAO.getProfile(chat.getUserTwo());
+            return fetchProfile(chat.getUserTwo());
         else
-            return profileLocalDAO.getProfile(chat.getUserOne());
+            return fetchProfile(chat.getUserOne());
+    }
+
+    private Profile fetchProfile(String userId){
+        Profile profile = profileLocalDAO.getProfile(userId);
+
+        if(profile == null){
+            profileRemoteDAO.getProfileRequestHandler(userId);
+            profile = fetchProfile(userId);
+        }
+
+        return profile;
     }
 
     private void setImage(ImageView imageView, String gender){

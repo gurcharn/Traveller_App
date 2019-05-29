@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.bottomNavigation.BottomNavigation;
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.R;
+import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.profile.ProfileRemoteDAO;
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.signup.SignUpActivity;
 
 /**
@@ -32,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private LoginLocalDAO loginLocalDAO;
     private LoginRemoteDAO loginRemoteDAO;
+    private ProfileRemoteDAO profileRemoteDAO;
 
     /**
      * Method to set view of activity
@@ -71,6 +73,7 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         loginLocalDAO = new LoginLocalDAO(this);
         loginRemoteDAO = new LoginRemoteDAO(this);
+        profileRemoteDAO = new ProfileRemoteDAO(this);
     }
 
     /**
@@ -195,8 +198,10 @@ public class LoginActivity extends AppCompatActivity {
      * Method to login if token already exist
      */
     public void loginIfTokenExist(){
-        if(checkToken())
+        if(checkToken()){
+            profileRemoteDAO.getMyProfileRequestHandler();
             startHomePage();
+        }
     }
 
     /**

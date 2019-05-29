@@ -83,17 +83,18 @@ public class ChatContactActivity extends AppCompatActivity {
                 chatArrayList.add(chat);
             }
         }
-        fetchUsers();
+//        fetchUsers();
         customArrayAdapter.notifyDataSetChanged();
     }
 
     private void fetchUsers(){
         for(Chat chat : chatArrayList){
-            if(chat.getUserOne() != profileRemoteDAO.getUserId())
-                profileRemoteDAO.getProfileRequestHandler(chat.getUserOne());
-            else
+            if(chat.getUserOne().equals(profileRemoteDAO.getUserId()))
                 profileRemoteDAO.getProfileRequestHandler(chat.getUserTwo());
+            else
+                profileRemoteDAO.getProfileRequestHandler(chat.getUserOne());
         }
+        customArrayAdapter.notifyDataSetChanged();
     }
 
     /**

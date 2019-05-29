@@ -34,6 +34,15 @@ public class ProfileRemoteDAO {
     private ChatContactActivity chatContactActivity;
     private ChatActivity chatActivity;
 
+    public ProfileRemoteDAO(Context context) {
+        this.endpoint = context.getResources().getString(R.string.profile_endpoint);
+        this.updateProfileEndpoint = context.getResources().getString(R.string.update_profile_endpoint);
+        this.context = context;
+        this.profileLocalDAO = new ProfileLocalDAO(context);
+        this.volleyRequestHandler = new VolleyRequestHandler(context);
+        this.loginLocalDAO = new LoginLocalDAO(context);
+    }
+
     public ProfileRemoteDAO(Context context, ViewProfileFragment viewProfileFragment) {
         this.endpoint = context.getResources().getString(R.string.profile_endpoint);
         this.updateProfileEndpoint = context.getResources().getString(R.string.update_profile_endpoint);
@@ -72,6 +81,52 @@ public class ProfileRemoteDAO {
         this.volleyRequestHandler = new VolleyRequestHandler(context);
         this.loginLocalDAO = new LoginLocalDAO(context);
         this.chatActivity = chatActivity;
+    }
+
+    public void getMyProfileRequestHandler() {
+        android.os.Handler mainHandler = new android.os.Handler(context.getMainLooper());
+
+        Runnable myRunnable = new Runnable() {
+            @Override
+            public void run() {
+                Response.Listener<JSONObject> listenerResponse = new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try{
+                            Profile profile = new Profile(
+                                    response.getString("userId"),
+                                    response.getString("firstName"),
+                                    response.getString("lastName"),
+                                    response.getString("age"),
+                                    response.getString("gender"),
+                                    response.getString("bio"),
+                                    response.getString("email"),
+                                    response.getString("phone"),
+                                    response.getString("facebook"),
+                                    translateLikesJSONArray(response.getJSONArray("likes"))
+                            );
+                            profileLocalDAO.resetTable();
+                            profileLocalDAO.insertProfile(profile);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+
+                Response.ErrorListener listenerError = new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                };
+
+                if (volleyRequestHandler.hasActiveInternetConnection()) {
+                    String params = "?userId=" + getUserId();
+                    volleyRequestHandler.getRequest(endpoint + params, listenerResponse, listenerError, getToken());
+                }
+            }
+        };
+        mainHandler.post(myRunnable);
     }
 
     public void getProfileRequestHandler() {
