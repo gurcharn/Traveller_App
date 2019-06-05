@@ -135,7 +135,9 @@ public class EditTripFragment extends Fragment {
             public void onClick(View v) {
                 if(isNewTripFormFilled()){
                     setErrorText("", Color.RED);
-
+                    trip.setPlace(placeAutoCompleteText.getText().toString());
+                    trip.setDeparture(toDate.getText().toString());
+                    trip.setArrival(fromDate.getText().toString());
                     tripRemoteDAO.updateTripRequestHandler(trip);
                 } else {
                     setErrorText(editTripView.getResources().getString(R.string.new_trip_form_error), Color.RED);

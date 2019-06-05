@@ -1,6 +1,5 @@
 package com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.bottomNavigation;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -12,16 +11,20 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.R;
-import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.chat.ChatContactActivity;
+import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.chat.ChatContactFragment;
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.people.PeopleFragment;
+import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.people.PeopleViewFragment;
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.places.PlacesFragment;
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.profile.ProfileFragment;
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.trips.TripsFragment;
+import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.volleyService.VolleyRequestHandler;
 
 public class BottomNavigation extends AppCompatActivity {
 
     private FrameLayout fragmnetContainer;
     private BottomNavigationView bottomNavigation;
+
+    private VolleyRequestHandler volleyRequestHandler;
 
     private Fragment currentFragment;
     private FragmentManager fragmentManager;
@@ -35,11 +38,25 @@ public class BottomNavigation extends AppCompatActivity {
         startTripsFragment();
     }
 
+    @Override
+    protected void onStop() {
+        destroyCurrentFragment();
+        super.onStop();
+    }
+
+    @Override
+    protected void onResume() {
+        destroyCurrentFragment();
+        startChatContactFragment();
+        super.onResume();
+    }
+
     private void init(){
         fragmnetContainer = (FrameLayout) findViewById(R.id.fragmnetContainer);
         bottomNavigation = (BottomNavigationView) findViewById(R.id.navigation);
         bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+        volleyRequestHandler = new VolleyRequestHandler(this);
         fragmentManager = getSupportFragmentManager();
     }
 
@@ -59,7 +76,7 @@ public class BottomNavigation extends AppCompatActivity {
                     startPeopleFragment();
                     return true;
                 case R.id.navigation_chat:
-                    startChatContactActivity();
+                    startChatContactFragment();
                     return true;
                 case R.id.navigation_profile:
                     startProfileFragment();
@@ -70,7 +87,13 @@ public class BottomNavigation extends AppCompatActivity {
     };
 
     private void startTripsFragment(){
-        if(!(currentFragment instanceof  TripsFragment)){
+        if(currentFragment == null) {
+            currentFragment = new TripsFragment();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.fragmnetContainer, currentFragment);
+            fragmentTransaction.commit();
+        } else if(!(currentFragment instanceof TripsFragment)){
+            destroyCurrentFragment();
             currentFragment = new TripsFragment();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.fragmnetContainer, currentFragment);
@@ -79,7 +102,7 @@ public class BottomNavigation extends AppCompatActivity {
     }
 
     private void startPlacesFragment(){
-        destroyCurrentFragemnt();
+        destroyCurrentFragment();
         currentFragment = new PlacesFragment();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragmnetContainer, currentFragment);
@@ -87,28 +110,35 @@ public class BottomNavigation extends AppCompatActivity {
     }
 
     private void startPeopleFragment(){
-        destroyCurrentFragemnt();
+        destroyCurrentFragment();
         currentFragment = new PeopleFragment();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragmnetContainer, currentFragment);
         fragmentTransaction.commit();
     }
 
-    private void startChatContactActivity(){
-        destroyCurrentFragemnt();
-        Intent chatContactActivity = new Intent(BottomNavigation.this, ChatContactActivity.class);
-        startActivity(chatContactActivity);
+    private void startChatContactFragment(){
+        destroyCurrentFragment();
+        currentFragment = new ChatContactFragment();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragmnetContainer, currentFragment);
+        fragmentTransaction.addToBackStack(null).commit();
     }
 
     private void startProfileFragment(){
-        destroyCurrentFragemnt();
+        destroyCurrentFragment();
         currentFragment = new ProfileFragment();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragmnetContainer, currentFragment);
         fragmentTransaction.commit();
     }
 
-    private void destroyCurrentFragemnt(){
-        fragmentManager.beginTransaction().remove(currentFragment).commit();
+    private void destroyCurrentFragment(){
+        try{
+            volleyRequestHandler.cancelAllRequests();
+            fragmentManager.beginTransaction().remove(currentFragment).commit();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

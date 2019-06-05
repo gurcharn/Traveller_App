@@ -7,11 +7,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.R;
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.chat.ChatActivity;
-import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.chat.ChatContactActivity;
-import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.chat.CustomArrayAdapter;
+import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.chat.ChatContactFragment;
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.login.Login;
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.login.LoginLocalDAO;
-import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.trips.EditTripFragment;
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.volleyService.VolleyRequestHandler;
 
 import org.json.JSONArray;
@@ -31,7 +29,7 @@ public class ProfileRemoteDAO {
     private ProfileLocalDAO profileLocalDAO;
     private ViewProfileFragment viewProfileFragment;
     private EditProfileFragment editProfileFragment;
-    private ChatContactActivity chatContactActivity;
+    private ChatContactFragment chatContactFragment;
     private ChatActivity chatActivity;
 
     public ProfileRemoteDAO(Context context) {
@@ -63,14 +61,14 @@ public class ProfileRemoteDAO {
         this.editProfileFragment = editProfileFragment;
     }
 
-    public ProfileRemoteDAO(Context context, ChatContactActivity chatContactActivity) {
+    public ProfileRemoteDAO(Context context, ChatContactFragment chatContactFragment) {
         this.endpoint = context.getResources().getString(R.string.profile_endpoint);
         this.updateProfileEndpoint = context.getResources().getString(R.string.update_profile_endpoint);
         this.context = context;
         this.profileLocalDAO = new ProfileLocalDAO(context);
         this.volleyRequestHandler = new VolleyRequestHandler(context);
         this.loginLocalDAO = new LoginLocalDAO(context);
-        this.chatContactActivity = chatContactActivity;
+        this.chatContactFragment = chatContactFragment;
     }
 
     public ProfileRemoteDAO(Context context, ChatActivity chatActivity) {
@@ -105,7 +103,6 @@ public class ProfileRemoteDAO {
                                     response.getString("facebook"),
                                     translateLikesJSONArray(response.getJSONArray("likes"))
                             );
-                            profileLocalDAO.resetTable();
                             profileLocalDAO.insertProfile(profile);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -151,7 +148,6 @@ public class ProfileRemoteDAO {
                                     response.getString("facebook"),
                                     translateLikesJSONArray(response.getJSONArray("likes"))
                             );
-                            profileLocalDAO.resetTable();
                             profileLocalDAO.insertProfile(profile);
                             viewProfileFragment.setProfileDataToView();
                         } catch (JSONException e) {
@@ -236,17 +232,17 @@ public class ProfileRemoteDAO {
                                 JSONObject result = new JSONObject(errorRes);
 
                                 if (result.getInt("status") == 500)
-                                    chatContactActivity.setErrorText("Error : " + result.get("message"), Color.RED);
+                                    chatContactFragment.setErrorText("Error : " + result.get("message"), Color.RED);
                                 else
-                                    chatContactActivity.setErrorText(context.getResources().getString(R.string.server_error_0), Color.RED);
+                                    chatContactFragment.setErrorText(context.getResources().getString(R.string.server_error_0), Color.RED);
                             } else {
-                                chatContactActivity.setErrorText(context.getResources().getString(R.string.server_error_1), Color.RED);
+                                chatContactFragment.setErrorText(context.getResources().getString(R.string.server_error_1), Color.RED);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         } catch (NullPointerException e) {
                             e.printStackTrace();
-                            chatContactActivity.setErrorText(context.getResources().getString(R.string.server_error_1), Color.RED);
+                            chatContactFragment.setErrorText(context.getResources().getString(R.string.server_error_1), Color.RED);
                         }
                     }
                 };
@@ -255,7 +251,7 @@ public class ProfileRemoteDAO {
                     String params = "?userId=" + userId;
                     volleyRequestHandler.getRequest(endpoint + params, listenerResponse, listenerError, getToken());
                 } else {
-                    chatContactActivity.setErrorText(context.getResources().getString(R.string.poor_connection), Color.RED);
+                    chatContactFragment.setErrorText(context.getResources().getString(R.string.poor_connection), Color.RED);
                 }
             }
         };
@@ -303,7 +299,6 @@ public class ProfileRemoteDAO {
                                     response.getString("phone"),
                                     response.getString("facebook"),
                                     translateLikesJSONArray(response.getJSONArray("likes")));
-                            profileLocalDAO.resetTable();
                             profileLocalDAO.insertProfile(profile);
                         } catch (JSONException e) {
                             e.printStackTrace();

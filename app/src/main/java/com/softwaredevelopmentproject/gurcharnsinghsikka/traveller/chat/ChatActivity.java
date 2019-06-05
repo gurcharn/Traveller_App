@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -18,6 +17,7 @@ import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.profile.Profi
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -72,7 +72,7 @@ public class ChatActivity extends AppCompatActivity {
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                chatRemoteDAO.getChatRequestHanlder(chat.getChatId());
+                chatRemoteDAO.getChatRequestHandler(chat.getChatId());
             }
         });
     }
@@ -113,7 +113,7 @@ public class ChatActivity extends AppCompatActivity {
             Chat newChat = new Chat(null, profileRemoteDAO.getUserId(), userId, new ArrayList<Message>());
             chatRemoteDAO.postChatRequestHandler(newChat);
         } else {
-            chatRemoteDAO.getChatRequestHanlder(chatId);
+            chatRemoteDAO.getChatRequestHandler(chatId);
         }
     }
 
@@ -133,11 +133,13 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void setDataToView(){
-        name.setText(otherProfile.getFirstName());
-        setMessages(chat.getMessages());
-//        chatMessageCustomArrayAdapter = new ChatMessageCustomArrayAdapter(this, messages, myProfile.getUserId());
-//        messageListView.setAdapter(chatMessageCustomArrayAdapter);
-        chatMessageCustomArrayAdapter.notifyDataSetChanged();
+        try{
+            name.setText(otherProfile.getFirstName());
+            setMessages(chat.getMessages());
+            chatMessageCustomArrayAdapter.notifyDataSetChanged();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void setMessages(List<Message> newMessages){
@@ -151,12 +153,12 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if(chat.getChatId()!=null)
-                    chatRemoteDAO.getChatRequestHanlder(chat.getChatId());
+                    chatRemoteDAO.getChatRequestHandler(chat.getChatId());
 
                 handler.postDelayed(this, 1000);
             }
         };
-        handler.postDelayed(runnable, 2000);
+        handler.postDelayed(runnable, 3000);
     }
 
     /**

@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.R;
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.profile.Profile;
+import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.profile.ProfileRemoteDAO;
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.trips.Trip;
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.trips.TripLocalDAO;
 

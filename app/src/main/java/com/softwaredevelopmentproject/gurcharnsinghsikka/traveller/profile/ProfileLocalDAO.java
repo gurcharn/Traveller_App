@@ -98,9 +98,10 @@ public class ProfileLocalDAO extends SQLiteOpenHelper {
 
     public Profile getProfile(String userId) {
         Profile profile = null;
+        Cursor cursor = null;
 
         try{
-            Cursor cursor = getReadableDB.rawQuery("SELECT * FROM " + TRAVELLER_TABLE_NAME + " WHERE " + PROFILE_COLUMN_ID + "=\'" + userId + "\'" , null);
+            cursor = getReadableDB.rawQuery("SELECT * FROM " + TRAVELLER_TABLE_NAME + " WHERE " + PROFILE_COLUMN_ID + "=\'" + userId + "\'" , null);
 
             if(cursor.getCount() > 0){
                 cursor.moveToFirst();
@@ -117,8 +118,10 @@ public class ProfileLocalDAO extends SQLiteOpenHelper {
             }
             cursor.close();
         } catch(SQLException e){
+            cursor.close();
             e.printStackTrace();
         } catch (Exception e){
+            cursor.close();
             e.printStackTrace();
         }
 

@@ -55,13 +55,7 @@ public class ChatMessageCustomArrayAdapter extends BaseAdapter {
         viewHolder.firstName.setText(profileLocalDAO.getProfile(message.getSenderId()).getFirstName());
         viewHolder.message.setText(message.getContent());
         viewHolder.time.setText(new Date(message.getTime()).toString());
-
-        if(myUserId.equals(message.getSenderId())){
-            convertView.setBackgroundColor(context.getResources().getColor(R.color.colorGrey));
-            viewHolder.firstName.setGravity(Gravity.RIGHT);
-            viewHolder.message.setGravity(Gravity.RIGHT);
-            viewHolder.time.setGravity(Gravity.RIGHT);
-        }
+        viewHolder.time.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
 
         return convertView;
     }

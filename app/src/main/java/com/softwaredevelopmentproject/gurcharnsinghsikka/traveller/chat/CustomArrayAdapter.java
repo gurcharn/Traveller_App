@@ -23,12 +23,12 @@ public class CustomArrayAdapter extends BaseAdapter {
     private ProfileLocalDAO profileLocalDAO;
     private ProfileRemoteDAO profileRemoteDAO;
 
-    public CustomArrayAdapter(Context context, ArrayList<Chat> chatArrayList, String myUserId) {
+    public CustomArrayAdapter(Context context, ChatContactFragment chatContactFragment,ArrayList<Chat> chatArrayList, String myUserId) {
         this.myUserId = myUserId;
         this.context = context;
         this.chatArrayList = chatArrayList;
         this.profileLocalDAO = new ProfileLocalDAO(context);
-        this.profileRemoteDAO = new ProfileRemoteDAO(context, (ChatContactActivity) context);
+        this.profileRemoteDAO = new ProfileRemoteDAO(context, chatContactFragment);
     }
 
     @Override
@@ -50,9 +50,12 @@ public class CustomArrayAdapter extends BaseAdapter {
 
         Profile profile = getProfile(chatArrayList.get(position));
 
-
-        setImage(viewHolder.profileImage, profile.getGender());
-        setTextView(viewHolder.name, profile.getFirstName() + " " + profile.getLastName());
+        try {
+            setImage(viewHolder.profileImage, profile.getGender());
+            setTextView(viewHolder.name, profile.getFirstName() + " " + profile.getLastName());
+        } catch (Exception e){
+            e.printStackTrace();
+        }
 
         return convertView;
     }
@@ -65,14 +68,13 @@ public class CustomArrayAdapter extends BaseAdapter {
     }
 
     private Profile fetchProfile(String userId){
-        Profile profile = profileLocalDAO.getProfile(userId);
+        return profileLocalDAO.getProfile(userId);
 
-        if(profile == null){
-            profileRemoteDAO.getProfileRequestHandler(userId);
-            profile = fetchProfile(userId);
-        }
-
-        return profile;
+//        if(profile == null){
+//            profileRemoteDAO.getProfileRequestHandler(userId);
+//
+//            profile = fetchProfile(userId);
+//        }
     }
 
     private void setImage(ImageView imageView, String gender){

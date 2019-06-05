@@ -185,7 +185,7 @@ public class TripRemoteDAO {
                     volleyRequestHandler.getRequestWithArrayResult(endpoint + params, listenerResponse, listenerError, getToken());
                 } else {
                     savedTripsListFragment.dismissProgressDialog();
-                    newTripsFragment.setErrorText(context.getResources().getString(R.string.poor_connection), Color.RED);
+                    savedTripsListFragment.setErrorText(context.getResources().getString(R.string.poor_connection), Color.RED);
                 }
             }
         };
@@ -277,18 +277,6 @@ public class TripRemoteDAO {
         Runnable myRunnable = new Runnable() {
             @Override
             public void run() {
-                JSONObject jsonBody = new JSONObject();
-
-                try {
-                    jsonBody.put("tripId", trip.getTripId());
-                    jsonBody.put("userId", trip.getUserId());
-                    jsonBody.put("place", trip.getPlace());
-                    jsonBody.put("arrival", trip.getArrival());
-                    jsonBody.put("departure", trip.getDeparture());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
                 Response.Listener<JSONObject> listenerResponse = new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -340,8 +328,9 @@ public class TripRemoteDAO {
                 editTripFragment.showProgressDialog(context.getResources().getString(R.string.checking_internet));
 
                 if (volleyRequestHandler.hasActiveInternetConnection()) {
+                    String params = "?tripId=" + trip.getTripId();
                     editTripFragment.showProgressDialog(context.getResources().getString(R.string.sending_request));
-                    volleyRequestHandler.deleteRequest(endpoint, jsonBody, listenerResponse, listenerError, getToken());
+                    volleyRequestHandler.deleteRequest(endpoint + params, null, listenerResponse, listenerError, getToken());
                 } else {
                     editTripFragment.dismissProgressDialog();
                     editTripFragment.setErrorText(context.getResources().getString(R.string.poor_connection), Color.RED);

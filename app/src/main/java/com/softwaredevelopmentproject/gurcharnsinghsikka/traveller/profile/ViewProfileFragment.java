@@ -86,7 +86,6 @@ public class ViewProfileFragment extends Fragment {
             public void onClick(View v) {
                 showProgressDialog(getResources().getString(R.string.profile_logout));
                 loginLocalDAO.resetTable();
-                profileLocalDAO.resetTable();
                 tripLocalDAO.resetTable();
                 dismissProgressDialog();
                 getActivity().finish();

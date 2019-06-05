@@ -6,12 +6,9 @@ import android.graphics.Color;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.R;
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.login.Login;
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.login.LoginLocalDAO;
-import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.profile.Profile;
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.profile.ProfileLocalDAO;
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.volleyService.VolleyRequestHandler;
 
@@ -29,7 +26,7 @@ public class ChatRemoteDAO {
     private final String userIdEndpoint;
 
     private Context context;
-    private ChatContactActivity chatContactActivity;
+    private ChatContactFragment chatContactFragment;
     private ChatActivity chatActivity;
 
     private VolleyRequestHandler volleyRequestHandler;
@@ -47,18 +44,18 @@ public class ChatRemoteDAO {
         this.profileLocalDAO = new ProfileLocalDAO(context);
     }
 
-    public ChatRemoteDAO(Context context, ChatContactActivity chatContactActivity){
+    public ChatRemoteDAO(Context context, ChatContactFragment chatContactFragment){
         this.endpoint = context.getResources().getString(R.string.chat_endpoint);
         this.chatIdEndpoint = context.getResources().getString(R.string.chatId_endpoint);
         this.userIdEndpoint = context.getResources().getString(R.string.userId_endpoint);
         this.context = context;
-        this.chatContactActivity = chatContactActivity;
+        this.chatContactFragment = chatContactFragment;
         this.volleyRequestHandler = new VolleyRequestHandler(context);
         this.loginLocalDAO = new LoginLocalDAO(context);
         this.profileLocalDAO = new ProfileLocalDAO(context);
     }
 
-    public void getChatRequestHanlder(final String chatId) {
+    public void getChatRequestHandler(final String chatId) {
         android.os.Handler mainHandler = new android.os.Handler(context.getMainLooper());
 
         Runnable myRunnable = new Runnable() {
@@ -108,7 +105,7 @@ public class ChatRemoteDAO {
         mainHandler.post(myRunnable);
     }
 
-    public void getAllChatRequestHanlder(final String userId) {
+    public void getAllChatRequestHandler(final String userId) {
         android.os.Handler mainHandler = new android.os.Handler(context.getMainLooper());
 
         Runnable myRunnable = new Runnable() {
@@ -117,7 +114,7 @@ public class ChatRemoteDAO {
                 Response.Listener<JSONArray> listenerResponse = new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        chatContactActivity.resetContactList(toList(response));
+                        chatContactFragment.resetContactList(toList(response));
                     }
                 };
 

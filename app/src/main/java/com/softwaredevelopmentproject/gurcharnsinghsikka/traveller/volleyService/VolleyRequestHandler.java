@@ -214,6 +214,7 @@ public class VolleyRequestHandler {
                 return headers;
             }
         };
+        System.out.println(jsonBody);
         setRetryPolicy(request);
         requestQueue.add(request);
     }
@@ -252,6 +253,15 @@ public class VolleyRequestHandler {
             @Override
             public void retry(VolleyError error) throws VolleyError {
 
+            }
+        });
+    }
+
+    public void cancelAllRequests(){
+        requestQueue.cancelAll(new RequestQueue.RequestFilter() {
+            @Override
+            public boolean apply(Request<?> request) {
+                return true;
             }
         });
     }

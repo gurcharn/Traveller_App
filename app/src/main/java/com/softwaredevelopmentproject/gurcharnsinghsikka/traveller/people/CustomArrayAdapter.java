@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.R;
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.profile.Profile;
+import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.profile.ProfileRemoteDAO;
 
 import java.util.ArrayList;
 
@@ -17,10 +18,12 @@ public class CustomArrayAdapter extends BaseAdapter {
 
     private Context context;
     private ArrayList<Profile> profileArrayList;
+    private ProfileRemoteDAO profileRemoteDAO;
 
     public CustomArrayAdapter(Context context, ArrayList<Profile> profileArrayList) {
         this.context = context;
         this.profileArrayList = profileArrayList;
+        this.profileRemoteDAO = new ProfileRemoteDAO(context);
     }
 
     @Override
@@ -44,6 +47,7 @@ public class CustomArrayAdapter extends BaseAdapter {
         }
 
         Profile profile = profileArrayList.get(position);
+        profileRemoteDAO.getProfileRequestHandler(profile.getUserId());
 
         setImage(viewHolder.profileImage, profile.getGender());
         setTextView(viewHolder.name, profile.getFirstName() + " " + profile.getLastName());

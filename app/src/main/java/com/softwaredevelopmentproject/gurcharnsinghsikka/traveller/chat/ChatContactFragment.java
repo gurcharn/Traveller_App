@@ -2,8 +2,12 @@ package com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.chat;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -14,8 +18,9 @@ import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.profile.Profi
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChatContactActivity extends AppCompatActivity {
+public class ChatContactFragment extends Fragment {
 
+    private View chatContactView;
     private TextView errorText;
     private TextView refreshButton;
     private ListView contactList;
@@ -25,26 +30,28 @@ public class ChatContactActivity extends AppCompatActivity {
     private ChatRemoteDAO chatRemoteDAO;
     private CustomArrayAdapter customArrayAdapter;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.chat_contact_layout);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        chatContactView = inflater.inflate(R.layout.chat_contact_layout,container,false);
 
-        init();
+        init(chatContactView);
         fetchChatContact();
         refreshButtonHandler();
         contactListItemHandler();
+
+        return chatContactView;
     }
 
-    private void init(){
-        errorText = (TextView) findViewById(R.id.error_text);
-        refreshButton = (TextView) findViewById(R.id.refreshButton);
-        contactList = (ListView) findViewById(R.id.contactList);
+    private void init(View view){
+        errorText = (TextView) view.findViewById(R.id.error_text);
+        refreshButton = (TextView) view.findViewById(R.id.refreshButton);
+        contactList = (ListView) view.findViewById(R.id.contactList);
 
         chatArrayList = new ArrayList<Chat>();
-        profileRemoteDAO = new ProfileRemoteDAO(this, this);
-        chatRemoteDAO = new ChatRemoteDAO(this, this);
-        customArrayAdapter = new CustomArrayAdapter(this, chatArrayList, profileRemoteDAO.getUserId());
+        profileRemoteDAO = new ProfileRemoteDAO(getContext(), this);
+        chatRemoteDAO = new ChatRemoteDAO(getContext(), this);
+        customArrayAdapter = new CustomArrayAdapter(getContext(), this, chatArrayList, profileRemoteDAO.getUserId());
         contactList.setAdapter(customArrayAdapter);
     }
 
@@ -67,13 +74,13 @@ public class ChatContactActivity extends AppCompatActivity {
     }
 
     private void startChat(String chatId){
-        Intent chatContactActivity = new Intent(ChatContactActivity.this , ChatActivity.class);
+        Intent chatContactActivity = new Intent(getContext() , ChatActivity.class);
         chatContactActivity.putExtra("chatId", chatId);
         startActivityForResult(chatContactActivity, 16);
     }
 
     private void fetchChatContact(){
-        chatRemoteDAO.getAllChatRequestHanlder(profileRemoteDAO.getUserId());
+        chatRemoteDAO.getAllChatRequestHandler(profileRemoteDAO.getUserId());
     }
 
     public void resetContactList(List<Chat> chatList){
@@ -83,7 +90,6 @@ public class ChatContactActivity extends AppCompatActivity {
                 chatArrayList.add(chat);
             }
         }
-//        fetchUsers();
         customArrayAdapter.notifyDataSetChanged();
     }
 
