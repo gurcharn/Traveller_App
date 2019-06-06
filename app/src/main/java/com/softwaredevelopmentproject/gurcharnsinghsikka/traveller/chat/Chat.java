@@ -57,10 +57,6 @@ public class Chat {
         return (this.getChatId()==chat.getChatId() && this.getUserOne()==chat.getUserOne() && this.getUserTwo()==chat.getUserTwo());
     }
 
-    /**
-     * Method to get hash of object
-     * @return int
-     */
     @Override
     public int hashCode() {
         int result;

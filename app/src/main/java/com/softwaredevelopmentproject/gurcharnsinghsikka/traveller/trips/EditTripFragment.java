@@ -65,6 +65,9 @@ public class EditTripFragment extends Fragment {
         return editTripView;
     }
 
+    /**
+     *  Method to initialise all variables and objects of this class
+     */
     private void init(View view){
         errorText = (TextView) view.findViewById(R.id.error_text);
         placeAutoCompleteText = (AutoCompleteTextView) view.findViewById(R.id.place);
@@ -83,6 +86,9 @@ public class EditTripFragment extends Fragment {
         geocoder = new Geocoder(this.getContext());
     }
 
+    /**
+     *  Method to fetch arguements from bundle
+     */
     private void fetchArguments(){
         Bundle bundle = getArguments();
         trip = tripLocalDAO.getTrip(bundle.getString("tripId"));
@@ -92,6 +98,9 @@ public class EditTripFragment extends Fragment {
         toDate.setText(trip.getDeparture());
     }
 
+    /**
+     *  Method to handle edit in auto complete
+     */
     private void placeTextEditHandler(){
         placeAutoCompleteText.addTextChangedListener(new TextWatcher() {
 
@@ -111,6 +120,9 @@ public class EditTripFragment extends Fragment {
         });
     }
 
+    /**
+     *  Method to open calender on from date edit
+     */
     private void fromDateHandler(){
         fromDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,6 +132,9 @@ public class EditTripFragment extends Fragment {
         });
     }
 
+    /**
+     *  Method to open calender in to date edit
+     */
     private void toDateHandler(){
         toDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,6 +144,9 @@ public class EditTripFragment extends Fragment {
         });
     }
 
+    /**
+     *  Method to handle click on update button
+     */
     private void updateTripButtonHandler(){
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,6 +164,9 @@ public class EditTripFragment extends Fragment {
         });
     }
 
+    /**
+     *  Method to handle click on delte button
+     */
     private void deleteTripButtonHandler(){
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,6 +178,9 @@ public class EditTripFragment extends Fragment {
         });
     }
 
+    /**
+     *  Method to handle clicks on go back button
+     */
     private void goBackButtonHandler(){
         goBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,10 +190,16 @@ public class EditTripFragment extends Fragment {
         });
     }
 
+    /**
+     *  Method to close current fragement and resume previous one
+     */
     public void popBackStack(){
         getFragmentManager().popBackStack();
     }
 
+    /**
+     *  Method to get date picker in dialog box
+     */
     private void getDatePickerDialog(final EditText editText){
         final Calendar calendar = Calendar.getInstance();
         final int day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -193,10 +223,16 @@ public class EditTripFragment extends Fragment {
         datePickerDialog.show();
     }
 
+    /**
+     *  Method to update laces suggestions in autocomplete
+     */
     private void updatePlaceSuggestion(){
         placeAutoCompleteText.setAdapter(new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_dropdown_item_1line, placesSuggestions));
     }
 
+    /**
+     *  Method to search for the place entered by user
+     */
     private void searchPlace(String place){
         try{
             List<Address> addresses = geocoder.getFromLocationName(place, 5);
@@ -214,6 +250,9 @@ public class EditTripFragment extends Fragment {
         }
     }
 
+    /**
+     *  Method to check if trip form is filled
+     */
     private boolean isNewTripFormFilled(){
         boolean formFilled = true;
 
@@ -227,6 +266,9 @@ public class EditTripFragment extends Fragment {
         return formFilled;
     }
 
+    /**
+     *  Method to check if edit text field is filled
+     */
     private boolean isEditTextFilled(EditText editText){
         String string = editText.getText().toString().trim();
 

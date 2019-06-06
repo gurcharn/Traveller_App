@@ -60,6 +60,9 @@ public class ChatMessageCustomArrayAdapter extends BaseAdapter {
         return convertView;
     }
 
+    /**
+     *  Method to fetch profiles of users in chat
+     */
     private Profile getProfile(Chat chat){
         if(chat.getUserOne() != myUserId)
             return profileLocalDAO.getProfile(chat.getUserOne());
@@ -67,6 +70,9 @@ public class ChatMessageCustomArrayAdapter extends BaseAdapter {
             return profileLocalDAO.getProfile(chat.getUserTwo());
     }
 
+    /**
+     *  Method to set image of user in chat
+     */
     private void setImage(ImageView imageView, String gender){
         if(gender == null || gender.isEmpty() || gender.equals("male") || gender.equals("Male") || gender.equals("m") || gender.equals("M"))
             imageView.setImageResource(R.drawable.profile_placeholder_male);
@@ -76,6 +82,9 @@ public class ChatMessageCustomArrayAdapter extends BaseAdapter {
             imageView.setImageResource(R.drawable.profile_placeholder_male);
     }
 
+    /**
+     *  Method to set data in text view
+     */
     private void setTextView(TextView textView, String string){
         String trimString = (string != null ? string : "").trim();
         if(string == null || trimString.isEmpty() || trimString.equals("null") || trimString.equals("null null") || trimString.equals("null n")){
@@ -107,6 +116,9 @@ public class ChatMessageCustomArrayAdapter extends BaseAdapter {
         return messageArrayList.get(position);
     }
 
+    /**
+     *  Method to get sender's user id
+     */
     public String getSenderId(int position){
         return messageArrayList.get(position).getSenderId();
     }

@@ -43,6 +43,9 @@ public class ChatContactFragment extends Fragment {
         return chatContactView;
     }
 
+    /**
+     *  Method to initialise all variables and objects for this class
+     */
     private void init(View view){
         errorText = (TextView) view.findViewById(R.id.error_text);
         refreshButton = (TextView) view.findViewById(R.id.refreshButton);
@@ -55,6 +58,9 @@ public class ChatContactFragment extends Fragment {
         contactList.setAdapter(customArrayAdapter);
     }
 
+    /**
+     *  Method to handle clicks on refresh button
+     */
     private void refreshButtonHandler(){
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,6 +70,9 @@ public class ChatContactFragment extends Fragment {
         });
     }
 
+    /**
+     *  Method to handle clicks on contact list items
+     */
     private void contactListItemHandler(){
         contactList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -73,16 +82,25 @@ public class ChatContactFragment extends Fragment {
         });
     }
 
+    /**
+     *  Method to change activity to chat messages activity
+     */
     private void startChat(String chatId){
         Intent chatContactActivity = new Intent(getContext() , ChatActivity.class);
         chatContactActivity.putExtra("chatId", chatId);
         startActivityForResult(chatContactActivity, 16);
     }
 
+    /**
+     *  Method to fetch recent chats
+     */
     private void fetchChatContact(){
         chatRemoteDAO.getAllChatRequestHandler(profileRemoteDAO.getUserId());
     }
 
+    /**
+     *  Method to reset contact list of recent chats
+     */
     public void resetContactList(List<Chat> chatList){
         chatArrayList.clear();
         for(Chat chat : chatList){
@@ -93,6 +111,9 @@ public class ChatContactFragment extends Fragment {
         customArrayAdapter.notifyDataSetChanged();
     }
 
+    /**
+     *  Method to fetch user data of recent chats
+     */
     private void fetchUsers(){
         for(Chat chat : chatArrayList){
             if(chat.getUserOne().equals(profileRemoteDAO.getUserId()))

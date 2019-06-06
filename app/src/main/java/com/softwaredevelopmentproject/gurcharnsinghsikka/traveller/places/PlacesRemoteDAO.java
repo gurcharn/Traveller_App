@@ -43,6 +43,9 @@ public class PlacesRemoteDAO {
         this.profileLocalDAO = new ProfileLocalDAO(context);
     }
 
+    /**
+     *  Method to handle places request
+     */
     public void placesTextSearchHandler(final Trip trip){
         android.os.Handler mainHandler = new android.os.Handler(context.getMainLooper());
 
@@ -114,6 +117,9 @@ public class PlacesRemoteDAO {
         mainHandler.post(myRunnable);
     }
 
+    /**
+     *  Method to convert JSONArray to list of places
+     */
     private ArrayList<Place> translatePlaceJSONArray(JSONArray jsonArray){
         ArrayList<Place> placeArrayList = new ArrayList<Place>();
 
@@ -133,6 +139,9 @@ public class PlacesRemoteDAO {
         return placeArrayList;
     }
 
+    /**
+     *  Method to get interests of the user
+     */
     private JSONArray getInterests(String userId){
         Profile profile = profileLocalDAO.getProfile(userId);
         List<String> interests = new ArrayList<>();
@@ -146,6 +155,9 @@ public class PlacesRemoteDAO {
         return translateInterest(interests);
     }
 
+    /**
+     *  Method to convert listof interest to JSONArray
+     */
     private JSONArray translateInterest(List<String> interests){
         JSONArray jsonArray = new JSONArray();
 
@@ -155,6 +167,9 @@ public class PlacesRemoteDAO {
         return jsonArray;
     }
 
+    /**
+     *  Method to get user id
+     */
     public String getUserId(){
         Login login = loginLocalDAO.getLogin();
 
@@ -164,6 +179,9 @@ public class PlacesRemoteDAO {
             return login.getId();
     }
 
+    /**
+     *  Method to get token
+     */
     private String getToken(){
         Login login = loginLocalDAO.getLogin();
 

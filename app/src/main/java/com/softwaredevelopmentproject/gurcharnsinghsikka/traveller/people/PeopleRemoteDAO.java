@@ -36,7 +36,9 @@ public class PeopleRemoteDAO {
         this.peopleFragment = peopleFragment;
     }
 
-
+    /**
+     *  Method to handle request to fetch suggested profiles
+     */
     public void peopleSuggestionRequestHandler(final String tripId) {
         android.os.Handler mainHandler = new android.os.Handler(context.getMainLooper());
 
@@ -89,6 +91,9 @@ public class PeopleRemoteDAO {
         mainHandler.post(myRunnable);
     }
 
+    /**
+     *  Method to convert JSONArray to list of Profile
+     */
     private List<Profile> translateProfileJSONArray(JSONArray jsonArray){
         List<Profile> profileList = new ArrayList<Profile>();
 
@@ -118,6 +123,9 @@ public class PeopleRemoteDAO {
         return profileList;
     }
 
+    /**
+     *  Method to convert JSONArray to list of string
+     */
     private List<String> translateLikesJSONArray(JSONArray jsonArray){
         List<String> likes = new ArrayList<>();
 
@@ -131,6 +139,9 @@ public class PeopleRemoteDAO {
         return likes;
     }
 
+    /**
+     *  Method to get user id of this user
+     */
     public String getUserId(){
         Login login = loginLocalDAO.getLogin();
 
@@ -140,6 +151,9 @@ public class PeopleRemoteDAO {
             return login.getId();
     }
 
+    /**
+     *  Method to get token
+     */
     private String getToken(){
         Login login = loginLocalDAO.getLogin();
 

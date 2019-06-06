@@ -42,7 +42,6 @@ public class PeopleFragment extends Fragment {
     private ArrayList<Profile> profileArrayList;
     private CustomArrayAdapter customArrayAdapter;
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -55,6 +54,9 @@ public class PeopleFragment extends Fragment {
         return peopleSuggestionView;
     }
 
+    /**
+     *  Method to initialise variable and objects of this class
+     */
     private void init(){
         errorText = peopleSuggestionView.findViewById(R.id.error_text);
         tripsDrowpDown = peopleSuggestionView.findViewById(R.id.tripsDropDown);
@@ -70,6 +72,9 @@ public class PeopleFragment extends Fragment {
         peopleSuggestionListView.setAdapter(customArrayAdapter);
     }
 
+    /**
+     *  Method to handle drop down list of trips
+     */
     private void tripsDropDownHandler(){
         tripsDrowpDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
@@ -86,6 +91,9 @@ public class PeopleFragment extends Fragment {
         });
     }
 
+    /**
+     *  Method to handle suggested people list view handler
+     */
     private void peopleSuggestionListViewHandler(){
         peopleSuggestionListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -95,6 +103,9 @@ public class PeopleFragment extends Fragment {
         });
     }
 
+    /**
+     *  Method to set list of suggested profile
+     */
     public void setProfileSuggestionList(List<Profile> profileList){
         if(profileList == null || profileList.isEmpty()){
             setErrorText(getString(R.string.no_suggestions_error), Color.RED);
@@ -107,6 +118,9 @@ public class PeopleFragment extends Fragment {
         customArrayAdapter.notifyDataSetChanged();
     }
 
+    /**
+     *  Method to set drop down list of trips
+     */
     private void setTripsDropDown(){
         setDropDownItems();
         dropDownArrayAdapter = new ArrayAdapter<>(this.getContext(), R.layout.support_simple_spinner_dropdown_item, dropDownItems);
@@ -114,6 +128,9 @@ public class PeopleFragment extends Fragment {
         tripsDrowpDown.setAdapter(dropDownArrayAdapter);
     }
 
+    /**
+     *  Method to set items in drop down trips
+     */
     private void setDropDownItems(){
         dropDownItems = new ArrayList<>();
         tripList = tripLocalDAO.getAllTrips();
@@ -128,6 +145,9 @@ public class PeopleFragment extends Fragment {
         }
     }
 
+    /**
+     *  Method to open a new fragment to view profile
+     */
     private void openPeopleViewFragment(String userId){
         FragmentManager fragmentManager = getFragmentManager();
         PeopleViewFragment peopleViewFragment = new PeopleViewFragment();
@@ -141,6 +161,9 @@ public class PeopleFragment extends Fragment {
         fragmentTransaction.commit();
     }
 
+    /**
+     *  Method to fetch trip on that position in list
+     */
     private Trip getTrip(int position){
         if(tripList == null)
             return null;

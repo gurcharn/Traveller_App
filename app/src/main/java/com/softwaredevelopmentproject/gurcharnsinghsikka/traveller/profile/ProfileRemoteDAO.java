@@ -81,6 +81,9 @@ public class ProfileRemoteDAO {
         this.chatActivity = chatActivity;
     }
 
+    /**
+     *  Method to handle profile fetch request
+     */
     public void getMyProfileRequestHandler() {
         android.os.Handler mainHandler = new android.os.Handler(context.getMainLooper());
 
@@ -126,6 +129,9 @@ public class ProfileRemoteDAO {
         mainHandler.post(myRunnable);
     }
 
+    /**
+     *  Method to profile request handler
+     */
     public void getProfileRequestHandler() {
         android.os.Handler mainHandler = new android.os.Handler(context.getMainLooper());
 
@@ -194,6 +200,9 @@ public class ProfileRemoteDAO {
         mainHandler.post(myRunnable);
     }
 
+    /**
+     *  Method to fetch profile from server using user id
+     */
     public void getProfileRequestHandler(final String userId) {
         android.os.Handler mainHandler = new android.os.Handler(context.getMainLooper());
 
@@ -258,6 +267,9 @@ public class ProfileRemoteDAO {
         mainHandler.post(myRunnable);
     }
 
+    /**
+     *  Method to update profile on server
+     */
     public void updateProfileRequestHandler(final Profile profile) {
         android.os.Handler mainHandler = new android.os.Handler(context.getMainLooper());
 
@@ -350,6 +362,9 @@ public class ProfileRemoteDAO {
         mainHandler.post(myRunnable);
     }
 
+    /**
+     *  Method to convert JSONArray to list of string
+     */
     private List<String> translateLikesJSONArray(JSONArray jsonArray){
         List<String> likes = new ArrayList<>();
 
@@ -363,6 +378,9 @@ public class ProfileRemoteDAO {
         return likes;
     }
 
+    /**
+     *  Method to convet list of like to JSONArray
+     */
     private JSONArray translateLikeList(List<String> likesList){
         JSONArray jsonArray = new JSONArray();
 
@@ -372,6 +390,9 @@ public class ProfileRemoteDAO {
         return jsonArray;
     }
 
+    /**
+     *  Method to get userid
+     */
     public String getUserId(){
         Login login = loginLocalDAO.getLogin();
 
@@ -381,6 +402,9 @@ public class ProfileRemoteDAO {
             return login.getId();
     }
 
+    /**
+     *  Method to get token
+     */
     private String getToken(){
         Login login = loginLocalDAO.getLogin();
 

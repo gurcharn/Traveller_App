@@ -48,6 +48,9 @@ public class PeopleViewFragment extends Fragment {
         return peopleView;
     }
 
+    /**
+     *  Method to initialise all varibales and objects of this class
+     */
     private void init(View view){
         errorText = view.findViewById(R.id.error_text);
         profileImage = view.findViewById(R.id.profileImage);
@@ -63,6 +66,9 @@ public class PeopleViewFragment extends Fragment {
         profileLocalDAO = new ProfileLocalDAO(this.getContext());
     }
 
+    /**
+     *  Method to handler clicks on message button
+     */
     private void messageButtonHandler(){
         messageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,11 +78,17 @@ public class PeopleViewFragment extends Fragment {
         });
     }
 
+    /**
+     *  Method to fetch profile
+     */
     private void fetchProfile(){
         Bundle bundle = getArguments();
         profile = profileLocalDAO.getProfile(bundle.getString("userId"));
     }
 
+    /**
+     *  Method to set profile data to layout
+     */
     public void setProfileDataToView(){
         if(profile != null){
             setProfilePic(profileImage, profile.getGender());
@@ -100,12 +112,18 @@ public class PeopleViewFragment extends Fragment {
         }
     }
 
+    /**
+     *  Method to start chat contacts activity
+     */
     private void startChatContactActivity(String userId){
         Intent chatContactActivity = new Intent(this.getContext() , ChatActivity.class);
         chatContactActivity.putExtra("userId", userId);
         startActivityForResult(chatContactActivity, 18);
     }
 
+    /**
+     *  Method to set profile pic
+     */
     private void setProfilePic(ImageView imageView, String gender){
         if(gender == null || gender.isEmpty() || gender.equals("male") || gender.equals("Male") || gender.equals("m") || gender.equals("M"))
             imageView.setImageResource(R.drawable.profile_placeholder_male);
@@ -115,6 +133,9 @@ public class PeopleViewFragment extends Fragment {
             imageView.setImageResource(R.drawable.profile_placeholder_male);
     }
 
+    /**
+     *  Method to set text view
+     */
     private void setTextView(TextView textView, String string){
         String trimString = (string != null ? string : "").trim();
         if(string == null || trimString.isEmpty() || trimString.equals("null") || trimString.equals("null null") || trimString.equals("null n")){

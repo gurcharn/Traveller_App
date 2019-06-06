@@ -62,6 +62,9 @@ public class EditProfileFragment extends Fragment {
         return editProfileView;
     }
 
+    /**
+     *  Method to initialise all variables and objects in this class
+     */
     private void init(View view){
         errorText = view.findViewById(R.id.error_text);
         firstName = view.findViewById(R.id.firstName);
@@ -86,6 +89,9 @@ public class EditProfileFragment extends Fragment {
         profileRemoteDAO = new ProfileRemoteDAO(this.getContext(), this);
     }
 
+    /**
+     *  Method handle spinner for age
+     */
     private void ageSpinnerHandler(){
         age.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
@@ -97,6 +103,9 @@ public class EditProfileFragment extends Fragment {
         });
     }
 
+    /**
+     *  Method to handle spinner of gender
+     */
     private void genderSpinnerHandler(){
         gender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
@@ -108,6 +117,9 @@ public class EditProfileFragment extends Fragment {
         });
     }
 
+    /**
+     *  Method to handle clicks on update button
+     */
     private void updateButtonHandler(){
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,6 +146,9 @@ public class EditProfileFragment extends Fragment {
         });
     }
 
+    /**
+     *  Method to handle clicks on cancel button
+     */
     private void cancelButtonHandler(){
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,6 +158,9 @@ public class EditProfileFragment extends Fragment {
         });
     }
 
+    /**
+     *  Method to add likes in list
+     */
     private void addLikesButtonHandler(){
         addLikeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,6 +188,9 @@ public class EditProfileFragment extends Fragment {
         });
     }
 
+    /**
+     *  Method to check if form is filled
+     */
     private boolean isUpdateProfileFormFilled(){
         boolean formFilled = true;
 
@@ -193,6 +214,9 @@ public class EditProfileFragment extends Fragment {
         return formFilled;
     }
 
+    /**
+     *  Method to check if list of likes is valid
+     */
     private boolean isValidLikesLIst(){
         String likes = likesList.getText().toString().trim();
 
@@ -210,6 +234,9 @@ public class EditProfileFragment extends Fragment {
             return true;
     }
 
+    /**
+     *  Method to get age
+     */
     private String getAge(){
         if(isValidAge())
             return ageValue;
@@ -217,6 +244,9 @@ public class EditProfileFragment extends Fragment {
             return null;
     }
 
+    /**
+     *  Method to get gender
+     */
     private String getGender(){
         if(isValidGender())
             return genderValue;
@@ -224,6 +254,9 @@ public class EditProfileFragment extends Fragment {
             return null;
     }
 
+    /**
+     *  Method to check if age value is valid
+     */
     private boolean isValidAge(){
         if(ageValue == null)
             return false;
@@ -237,6 +270,9 @@ public class EditProfileFragment extends Fragment {
             return true;
     }
 
+    /**
+     *  Method to check if gender value is valid
+     */
     private boolean isValidGender(){
         if(genderValue == null)
             return false;
@@ -272,6 +308,9 @@ public class EditProfileFragment extends Fragment {
         }
     }
 
+    /**
+     *  Method to check if edit text field is filled
+     */
     private boolean isEditTextFilled(EditText editText){
         String string = editText.getText().toString().trim();
 
@@ -297,6 +336,9 @@ public class EditProfileFragment extends Fragment {
         }
     }
 
+    /**
+     *  Method to fetch profile profile data
+     */
     private void fetchProfileData(){
         Profile profile = profileLocalDAO.getProfile(profileRemoteDAO.getUserId());
 
@@ -313,6 +355,9 @@ public class EditProfileFragment extends Fragment {
         }
     }
 
+    /**
+     *  Method to set edit to text field
+     */
     private void setEditText(EditText editText, String text){
         String string = (text != null ? text : "").trim();
 
@@ -330,6 +375,9 @@ public class EditProfileFragment extends Fragment {
             editText.setText(text);
     }
 
+    /**
+     *  Method to close current fragemnt and go back to previous one
+     */
     public void popBackStack(){
         getFragmentManager().popBackStack();
     }
@@ -364,6 +412,4 @@ public class EditProfileFragment extends Fragment {
     public void dismissProgressDialog(){
         progressDialog.dismiss();
     }
-
-
 }

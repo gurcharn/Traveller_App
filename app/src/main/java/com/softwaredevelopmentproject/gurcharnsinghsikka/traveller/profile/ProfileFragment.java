@@ -27,6 +27,9 @@ public class ProfileFragment extends Fragment {
         return profileView;
     }
 
+    /**
+     *  Method to start profile view fragment
+     */
     private void startViewProfileFragment(){
         ViewProfileFragment viewProfileFragment = new ViewProfileFragment();
 

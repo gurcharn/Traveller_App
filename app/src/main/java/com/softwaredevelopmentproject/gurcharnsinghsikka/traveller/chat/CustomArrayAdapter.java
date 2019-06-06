@@ -60,6 +60,9 @@ public class CustomArrayAdapter extends BaseAdapter {
         return convertView;
     }
 
+    /**
+     *  Method to fetch profile from chat
+     */
     private Profile getProfile(Chat chat){
         if(chat.getUserOne().equals(myUserId))
             return fetchProfile(chat.getUserTwo());
@@ -67,16 +70,16 @@ public class CustomArrayAdapter extends BaseAdapter {
             return fetchProfile(chat.getUserOne());
     }
 
+    /**
+     *  Method to fetch user frofile using user id
+     */
     private Profile fetchProfile(String userId){
         return profileLocalDAO.getProfile(userId);
-
-//        if(profile == null){
-//            profileRemoteDAO.getProfileRequestHandler(userId);
-//
-//            profile = fetchProfile(userId);
-//        }
     }
 
+    /**
+     *  Method to set image of user
+     */
     private void setImage(ImageView imageView, String gender){
         if(gender == null || gender.isEmpty() || gender.equals("male") || gender.equals("Male") || gender.equals("m") || gender.equals("M"))
             imageView.setImageResource(R.drawable.profile_placeholder_male);
@@ -86,6 +89,9 @@ public class CustomArrayAdapter extends BaseAdapter {
             imageView.setImageResource(R.drawable.profile_placeholder_male);
     }
 
+    /**
+     *  Method to set data in text view
+     */
     private void setTextView(TextView textView, String string){
         String trimString = (string != null ? string : "").trim();
         if(string == null || trimString.isEmpty() || trimString.equals("null") || trimString.equals("null null") || trimString.equals("null n")){
@@ -117,6 +123,9 @@ public class CustomArrayAdapter extends BaseAdapter {
         return chatArrayList.get(position);
     }
 
+    /**
+     *  Method to get chat id
+     */
     public String getChatId(int position){
         return chatArrayList.get(position).getChatId();
     }

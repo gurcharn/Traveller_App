@@ -58,6 +58,9 @@ public class CustomArrayAdapter extends BaseAdapter {
         return convertView;
     }
 
+    /**
+     *  Method to set image of suggested profile
+     */
     private void setImage(ImageView imageView, String gender){
         if(gender == null || gender.isEmpty() || gender.equals("male") || gender.equals("Male") || gender.equals("m") || gender.equals("M"))
             imageView.setImageResource(R.drawable.profile_placeholder_male);
@@ -67,6 +70,9 @@ public class CustomArrayAdapter extends BaseAdapter {
             imageView.setImageResource(R.drawable.profile_placeholder_male);
     }
 
+    /**
+     *  Method to set data in text view
+     */
     private void setTextView(TextView textView, String string){
         String trimString = (string != null ? string : "").trim();
         if(string == null || trimString.isEmpty() || trimString.equals("null") || trimString.equals("null null") || trimString.equals("null n")){
@@ -98,6 +104,9 @@ public class CustomArrayAdapter extends BaseAdapter {
         return profileArrayList.get(position);
     }
 
+    /**
+     *  Method to get user id
+     */
     public String getUserId(int position){
         return profileArrayList.get(position).getUserId();
     }

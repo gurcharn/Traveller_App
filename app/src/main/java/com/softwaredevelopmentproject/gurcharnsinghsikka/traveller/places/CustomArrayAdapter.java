@@ -80,6 +80,9 @@ public class CustomArrayAdapter extends BaseAdapter {
         public TextView address;
     }
 
+    /**
+     *  Method to load icons of places
+     */
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
 

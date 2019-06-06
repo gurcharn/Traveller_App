@@ -19,6 +19,10 @@ import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.profile.Profi
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.trips.TripsFragment;
 import com.softwaredevelopmentproject.gurcharnsinghsikka.traveller.volleyService.VolleyRequestHandler;
 
+/**
+ * @author Gurcharn Singh Sikka
+ * @version 1.0
+ */
 public class BottomNavigation extends AppCompatActivity {
 
     private FrameLayout fragmnetContainer;
@@ -56,6 +60,9 @@ public class BottomNavigation extends AppCompatActivity {
         super.onResume();
     }
 
+    /**
+     *  Method to initialize all variables and objects
+     */
     private void init(){
         fragmnetContainer = (FrameLayout) findViewById(R.id.fragmnetContainer);
         bottomNavigation = (BottomNavigationView) findViewById(R.id.navigation);
@@ -65,6 +72,9 @@ public class BottomNavigation extends AppCompatActivity {
         fragmentManager = getSupportFragmentManager();
     }
 
+    /**
+     *  Navigation button listener
+     */
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -91,6 +101,9 @@ public class BottomNavigation extends AppCompatActivity {
         }
     };
 
+    /**
+     *  Method to Trips fragment start
+     */
     private void startTripsFragment(){
         if(currentFragment == null) {
             currentFragment = new TripsFragment();
@@ -112,6 +125,9 @@ public class BottomNavigation extends AppCompatActivity {
         }
     }
 
+    /**
+     *  Method to start Places Fragment
+     */
     private void startPlacesFragment(){
         destroyCurrentFragment();
         currentFragment = new PlacesFragment();
@@ -120,6 +136,9 @@ public class BottomNavigation extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
+    /**
+     *  Method to start People Fragment
+     */
     private void startPeopleFragment(){
         destroyCurrentFragment();
         currentFragment = new PeopleFragment();
@@ -128,6 +147,9 @@ public class BottomNavigation extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
+    /**
+     *  Method to start Chat Fragment
+     */
     private void startChatContactFragment(){
         destroyCurrentFragment();
         currentFragment = new ChatContactFragment();
@@ -136,6 +158,9 @@ public class BottomNavigation extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
+    /**
+     *  Method to start Profile Fragment
+     */
     private void startProfileFragment(){
         destroyCurrentFragment();
         currentFragment = new ProfileFragment();
@@ -144,6 +169,9 @@ public class BottomNavigation extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
+    /**
+     *  Method to destroy current fragment
+     */
     private void destroyCurrentFragment(){
         try{
             volleyRequestHandler.cancelAllRequests();

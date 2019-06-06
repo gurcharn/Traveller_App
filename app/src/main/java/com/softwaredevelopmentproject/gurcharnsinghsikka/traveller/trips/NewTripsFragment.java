@@ -61,6 +61,9 @@ public class NewTripsFragment extends Fragment {
         return newTripView;
     }
 
+    /**
+     *  Method to initialise all variables and objects in this class
+     */
     private void init(View view){
         errorText = (TextView) view.findViewById(R.id.error_text);
         fromDate = (EditText) view.findViewById(R.id.fromDate);
@@ -75,6 +78,9 @@ public class NewTripsFragment extends Fragment {
         geocoder = new Geocoder(this.getContext());
     }
 
+    /**
+     *  Method to handle edits on place edit text
+     */
     private void placeTextEditHandler(){
         placeAutoCompleteText.addTextChangedListener(new TextWatcher() {
 
@@ -94,6 +100,9 @@ public class NewTripsFragment extends Fragment {
         });
     }
 
+    /**
+     *  Method to handle edit text of from date
+     */
     private void fromDateHandler(){
         fromDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,6 +112,9 @@ public class NewTripsFragment extends Fragment {
         });
     }
 
+    /**
+     *  Method to handle edit text of to date
+     */
     private void toDateHandler(){
         toDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,6 +124,9 @@ public class NewTripsFragment extends Fragment {
         });
     }
 
+    /**
+     *  Method to handle click on save button
+     */
     private void saveTripButtonHandler(){
         saveTripButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,6 +146,9 @@ public class NewTripsFragment extends Fragment {
         });
     }
 
+    /**
+     *  Method to open date picker dialog
+     */
     private void getDatePickerDialog(final EditText editText){
         final Calendar calendar = Calendar.getInstance();
         final int day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -154,10 +172,16 @@ public class NewTripsFragment extends Fragment {
         datePickerDialog.show();
     }
 
+    /**
+     *  Method to update place suggestions in auto complete
+     */
     private void updatePlaceSuggestion(){
         placeAutoCompleteText.setAdapter(new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_dropdown_item_1line, placesSuggestions));
     }
 
+    /**
+     *  Method to search place entered by user in edit text
+     */
     private void searchPlace(String place){
         try{
             List<Address> addresses = geocoder.getFromLocationName(place, 5);
@@ -175,6 +199,9 @@ public class NewTripsFragment extends Fragment {
         }
     }
 
+    /**
+     *  Method to check if form is filled
+     */
     private boolean isNewTripFormFilled(){
         boolean formFilled = true;
 
@@ -188,6 +215,9 @@ public class NewTripsFragment extends Fragment {
         return formFilled;
     }
 
+    /**
+     *  Method to check if edit text filled
+     */
     private boolean isEditTextFilled(EditText editText){
         String string = editText.getText().toString().trim();
 

@@ -59,6 +59,9 @@ public class ViewProfileFragment extends Fragment {
         return profileView;
     }
 
+    /**
+     *  Method to initialise all variables and objects in this class
+     */
     private void init(View view){
         logoutButton = view.findViewById(R.id.logout);
         errorText = view.findViewById(R.id.error_text);
@@ -80,6 +83,9 @@ public class ViewProfileFragment extends Fragment {
         tripLocalDAO = new TripLocalDAO(this.getContext());
     }
 
+    /**
+     *  Method to handle clicks on logout button
+     */
     private void logoutButtonHandler(){
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,6 +99,9 @@ public class ViewProfileFragment extends Fragment {
         });
     }
 
+    /**
+     *  Method to handle clicks on refresh butoon
+     */
     private void refreshButtonHandler(){
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,6 +113,9 @@ public class ViewProfileFragment extends Fragment {
         });
     }
 
+    /**
+     *  Method to handle clicks on edit button
+     */
     private void editButtonHandler(){
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,6 +125,9 @@ public class ViewProfileFragment extends Fragment {
         });
     }
 
+    /**
+     *  Method to start edit profile fragment
+     */
     private void startEditProfileFragment(){
         EditProfileFragment editProfileFragment = new EditProfileFragment();
 
@@ -122,10 +137,16 @@ public class ViewProfileFragment extends Fragment {
         fragmentTransaction.addToBackStack(null).addToBackStack(null).commit();
     }
 
+    /**
+     *  Method to fetch profile
+     */
     private void fetchProfile(){
         profileRemoteDAO.getProfileRequestHandler();
     }
 
+    /**
+     *  Method to set profile data to view
+     */
     public void setProfileDataToView(){
         Profile profile = profileLocalDAO.getProfile(profileRemoteDAO.getUserId());
         if(profile != null){
@@ -149,6 +170,9 @@ public class ViewProfileFragment extends Fragment {
         }
     }
 
+    /**
+     *  Method to set profile pic
+     */
     private void setProfilePic(ImageView imageView, String gender){
         if(gender == null || gender.isEmpty() || gender.equals("male") || gender.equals("Male") || gender.equals("m") || gender.equals("M"))
             imageView.setImageResource(R.drawable.profile_placeholder_male);
@@ -158,6 +182,9 @@ public class ViewProfileFragment extends Fragment {
             imageView.setImageResource(R.drawable.profile_placeholder_male);
     }
 
+    /**
+     *  Method to set data to text view
+     */
     private void setTextView(TextView textView, String string){
         String trimString = (string != null ? string : "").trim();
         if(string == null || trimString.isEmpty() || trimString.equals("null") || trimString.equals("null null") || trimString.equals("null n")){

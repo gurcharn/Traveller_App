@@ -51,6 +51,9 @@ public class ChatActivity extends AppCompatActivity {
         updateChat();
     }
 
+    /**
+     *  Method to initialise all variables and objects for this class
+     */
     private void init(){
         errorText = (TextView) findViewById(R.id.error_text);
         refreshButton = (TextView) findViewById(R.id.refreshButton);
@@ -68,6 +71,9 @@ public class ChatActivity extends AppCompatActivity {
         messageListView.setAdapter(chatMessageCustomArrayAdapter);
     }
 
+    /**
+     *  Method to handle refresh button click
+     */
     private void refreshButtonHandler(){
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,6 +83,9 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     *  Method to handle send button click
+     */
     private void sendButtonClickHandler(){
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,6 +104,9 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     *  Method to handle clicks on name
+     */
     private void nameClickHandler(){
         name.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,6 +116,9 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     *  Method to fetch intent value
+     */
     private void getIntentValue(){
         Intent intent = getIntent();
         String userId = intent.getStringExtra("userId");
@@ -117,6 +132,9 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     *  Method to set chat adter data refresh
+     */
     public void setChat(Chat chat){
         this.chat = chat;
 
@@ -128,10 +146,16 @@ public class ChatActivity extends AppCompatActivity {
         setDataToView();
     }
 
+    /**
+     *  Method to set other user profile
+     */
     private void setOtherProfile(Profile otherProfile){
         this.otherProfile = otherProfile;
     }
 
+    /**
+     *  Method to set data to view/layout
+     */
     private void setDataToView(){
         try{
             name.setText(otherProfile.getFirstName());
@@ -142,11 +166,17 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     *  Method to set Messages
+     */
     private void setMessages(List<Message> newMessages){
         messages.clear();
         messages.addAll(newMessages);
     }
 
+    /**
+     *  Method to update chat
+     */
     private void updateChat(){
         final Handler handler = new Handler();
         Runnable runnable = new Runnable() {

@@ -55,6 +55,9 @@ public class ChatRemoteDAO {
         this.profileLocalDAO = new ProfileLocalDAO(context);
     }
 
+    /**
+     *  Method to send fetch chat from server
+     */
     public void getChatRequestHandler(final String chatId) {
         android.os.Handler mainHandler = new android.os.Handler(context.getMainLooper());
 
@@ -105,6 +108,9 @@ public class ChatRemoteDAO {
         mainHandler.post(myRunnable);
     }
 
+    /**
+     *  Method to fetch all chats of this user
+     */
     public void getAllChatRequestHandler(final String userId) {
         android.os.Handler mainHandler = new android.os.Handler(context.getMainLooper());
 
@@ -153,6 +159,9 @@ public class ChatRemoteDAO {
         mainHandler.post(myRunnable);
     }
 
+    /**
+     *  Method to create a new or update chat in server
+     */
     public void postChatRequestHandler(final Chat chat){
         android.os.Handler mainHandler = new android.os.Handler(context.getMainLooper());
 
@@ -210,6 +219,9 @@ public class ChatRemoteDAO {
         mainHandler.post(myRunnable);
     }
 
+    /**
+     *  Method to conver JSONArray to list of chat
+     */
     private List<Chat> toList(JSONArray jsonArray){
         Gson gson = new Gson();
         List<Chat> chatList = new ArrayList<Chat>();
@@ -224,6 +236,9 @@ public class ChatRemoteDAO {
         return chatList;
     }
 
+    /**
+     *  Method to convert messages list to JSONArray
+     */
     private JSONArray toJSONArray(List<Message> messages){
         JSONArray jsonArray = new JSONArray();
 
@@ -234,6 +249,9 @@ public class ChatRemoteDAO {
         return jsonArray;
     }
 
+    /**
+     *  Method to convert a message to JSONOBject
+     */
     private JSONObject toJSONObject(Message message){
         JSONObject jsonObject = new JSONObject();
 
@@ -249,6 +267,9 @@ public class ChatRemoteDAO {
         return jsonObject;
     }
 
+    /**
+     *  Method to get userid of current user
+     */
     public String getUserId(){
         Login login = loginLocalDAO.getLogin();
 
@@ -258,6 +279,9 @@ public class ChatRemoteDAO {
             return login.getId();
     }
 
+    /**
+     *  Method to get token of this user
+     */
     private String getToken(){
         Login login = loginLocalDAO.getLogin();
 

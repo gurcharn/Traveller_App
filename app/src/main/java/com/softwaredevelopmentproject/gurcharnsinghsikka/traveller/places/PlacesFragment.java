@@ -52,6 +52,9 @@ public class PlacesFragment extends Fragment {
         return placesSuggestionView;
     }
 
+    /**
+     *  Method to initialise all variables and objects in class
+     */
     private void init(){
         errorText = placesSuggestionView.findViewById(R.id.error_text);
         tripsDrowpDown = placesSuggestionView.findViewById(R.id.tripsDropDown);
@@ -67,6 +70,9 @@ public class PlacesFragment extends Fragment {
         placeSuggestionListView.setAdapter(customArrayAdapter);
     }
 
+    /**
+     *  Method to handle clicks on item of drop down
+     */
     private void tripsDropDownHandler(){
         tripsDrowpDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
@@ -83,6 +89,9 @@ public class PlacesFragment extends Fragment {
         });
     }
 
+    /**
+     *  Method to handle clicks on suggestion list view item
+     */
     private void placeSuggestionListViewHandler(){
         placeSuggestionListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -95,6 +104,9 @@ public class PlacesFragment extends Fragment {
         });
     }
 
+    /**
+     *  Method to set list of siggested places
+     */
     public void setPlacesSuggestionList(List<Place> placeList){
         if(placeList == null || placeList.isEmpty()){
             setErrorText(getString(R.string.no_suggestions_error), Color.RED);
@@ -107,6 +119,9 @@ public class PlacesFragment extends Fragment {
         customArrayAdapter.notifyDataSetChanged();
     }
 
+    /**
+     *  Method to set trips drop down
+     */
     private void setTripsDropDown(){
         setDropDownItems();
         dropDownArrayAdapter = new ArrayAdapter<>(this.getContext(), R.layout.support_simple_spinner_dropdown_item, dropDownItems);
@@ -114,6 +129,9 @@ public class PlacesFragment extends Fragment {
         tripsDrowpDown.setAdapter(dropDownArrayAdapter);
     }
 
+    /**
+     *  Method to set items in drop down
+     */
     private void setDropDownItems(){
         dropDownItems = new ArrayList<>();
         tripList = tripLocalDAO.getAllTrips();
@@ -128,6 +146,9 @@ public class PlacesFragment extends Fragment {
         }
     }
 
+    /**
+     *  Method to get trip object on that position in list
+     */
     private Trip getTrip(int position){
         if(tripList == null)
             return null;
