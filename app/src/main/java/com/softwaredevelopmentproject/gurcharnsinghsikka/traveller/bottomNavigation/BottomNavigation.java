@@ -35,7 +35,6 @@ public class BottomNavigation extends AppCompatActivity {
         setContentView(R.layout.bottom_nav_layout);
 
         init();
-        startTripsFragment();
     }
 
     @Override
@@ -46,8 +45,14 @@ public class BottomNavigation extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        destroyCurrentFragment();
-        startChatContactFragment();
+        if(currentFragment !=null){
+            destroyCurrentFragment();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.fragmnetContainer, currentFragment);
+            fragmentTransaction.commit();
+        } else{
+            startTripsFragment();
+        }
         super.onResume();
     }
 
@@ -98,6 +103,12 @@ public class BottomNavigation extends AppCompatActivity {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.fragmnetContainer, currentFragment);
             fragmentTransaction.commit();
+        } else{
+            destroyCurrentFragment();
+            currentFragment = new TripsFragment();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.fragmnetContainer, currentFragment);
+            fragmentTransaction.commit();
         }
     }
 
@@ -122,7 +133,7 @@ public class BottomNavigation extends AppCompatActivity {
         currentFragment = new ChatContactFragment();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragmnetContainer, currentFragment);
-        fragmentTransaction.addToBackStack(null).commit();
+        fragmentTransaction.commit();
     }
 
     private void startProfileFragment(){

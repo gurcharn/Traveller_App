@@ -102,7 +102,7 @@
 
     <string name="sign_up_text">Sign Up</string>
 
-    <string name="domain">http://192.168.0.108:9000/</string>
+    <string name="domain">http://52.89.189.137:9000/</string>
     <string name="login_endpoint">login</string>
     <string name="signup_endpoint">signUp</string>
     <string name="trip_endpoint">secure/trip</string>

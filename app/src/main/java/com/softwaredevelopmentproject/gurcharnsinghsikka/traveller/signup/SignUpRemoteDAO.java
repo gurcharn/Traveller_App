@@ -61,7 +61,7 @@ public class SignUpRemoteDAO {
                     jsonUserInfo.put("lastName", lastName);
                     jsonUserInfo.put("email", email);
                     jsonUserInfo.put("bio", "I love Travelling");
-                    jsonUserInfo.put("likes", new JSONArray(Arrays.asList("Hotels", "Museum", "History", "Bars", "Restaurant", "Tourist","Attraction")));
+                    jsonUserInfo.put("likes", new JSONArray(Arrays.asList("Hotels", "Museum", "History", "Bars", "Restaurant", "Tourist", "Attraction")));
 
                     jsonLoginInfo.put("username", username);
                     jsonLoginInfo.put("password", password);

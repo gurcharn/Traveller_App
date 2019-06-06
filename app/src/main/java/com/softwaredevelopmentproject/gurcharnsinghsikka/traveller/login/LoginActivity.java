@@ -70,6 +70,8 @@ public class LoginActivity extends AppCompatActivity {
         signUpButton = (TextView) findViewById(R.id.sign_up_button);
         forgotPasswordButton = (TextView) findViewById(R.id.forgot_password_button);
 
+        forgotPasswordButton.setVisibility(View.INVISIBLE);
+
         progressDialog = new ProgressDialog(this);
         loginLocalDAO = new LoginLocalDAO(this);
         loginRemoteDAO = new LoginRemoteDAO(this);
